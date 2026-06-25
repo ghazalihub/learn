@@ -1,0 +1,5 @@
+import '../../../core/app_export.dart';import 'learnnewskillslist1_item_model.dart';/// This class defines the variables used in the [cart_screen],
+/// and is typically used to hold data that is passed between different parts of the application.
+class CartModel {Rx<List<Learnnewskillslist1ItemModel>> learnnewskillslist1ItemList = Rx([Learnnewskillslist1ItemModel(image:ImageConstant.imgGroupIndianCh2.obs,learnNewSkills: "Learn new skills, advance your career".obs,price: "65.00".obs,circleImage:ImageConstant.imgEllipse2049.obs,alreadyHaveAn: "Esther howards".obs,alreadyHaveAn1: "Instructor".obs,one: "01".obs),Learnnewskillslist1ItemModel(image:ImageConstant.imgGroupIndianCh5.obs,learnNewSkills: "Learn new skills, advance your career".obs,price: "65.00".obs,circleImage:ImageConstant.imgEllipse20493.obs,alreadyHaveAn: "Ralph edwards".obs,alreadyHaveAn1: "Instructor".obs,one: "01".obs),Learnnewskillslist1ItemModel(image:ImageConstant.imgGroupIndianCh1.obs,learnNewSkills: "Learn new skills, advance your career".obs,price: "65.00".obs,circleImage:ImageConstant.imgEllipse20497.obs,alreadyHaveAn: "Robert fox".obs,alreadyHaveAn1: "Instructor".obs,one: "01".obs)]);
+
+ }
