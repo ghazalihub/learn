@@ -27,10 +27,11 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
 
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if (didPop) return;
         Get.back();
-        return true;
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -131,7 +132,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       ? Expanded(
                           child: Padding(
                               padding: EdgeInsets.symmetric(horizontal: 16.h),
-                              child: GridView.builder(
+                              child: Obx(() => GridView.builder(
                                   shrinkWrap: true,
                                   gridDelegate:
                                       SliverGridDelegateWithFixedCrossAxisCount(
@@ -141,19 +142,28 @@ class _SearchScreenState extends State<SearchScreen> {
                                           crossAxisSpacing: 16.h),
                                   physics: BouncingScrollPhysics(),
                                   itemCount: featuredCourseController
-                                      .featuredCourceList.length,
+                                      .featuredCourses.length,
                                   itemBuilder: (context, index) {
-                                    FavoritegridItemModel model =
+                                    var model =
                                         featuredCourseController
-                                            .featuredCourceList[index];
+                                            .featuredCourses[index];
                                     return animationfunction(
                                         index,
-                                        FavoritegridItemWidget(model,
-                                            onTapFund: () {
+                                        FavoritegridItemWidget(
+                                          FavoritegridItemModel(
+                                            model.thumbnailUrl,
+                                            model.title,
+                                            model.instructorImage,
+                                            model.instructorName,
+                                            model.category,
+                                            "${model.currency} ${model.price}",
+                                            false
+                                          ),
+                                          onTapFund: () {
                                           Get.toNamed(AppRoutes
-                                              .courseDetailsAboutScreen);
+                                              .courseDetailsAboutScreen, arguments: model);
                                         }));
-                                  })))
+                                  }))))
                       : ListView.builder(
                           padding: EdgeInsets.symmetric(horizontal: 16.h),
                           primary: false,
@@ -194,15 +204,6 @@ class _SearchScreenState extends State<SearchScreen> {
                             );
                           },
                         )
-
-                  // ntainer(
-                  //       width: double.maxFinite,
-                  //       padding: EdgeInsets.symmetric(
-                  //         horizontal: 16.h,
-                  //         vertical: 24.v,
-                  //       ),
-                  //       child: _buildRecentClearAllRow(),
-                  // ),
                 ],
               );
             },
@@ -211,31 +212,4 @@ class _SearchScreenState extends State<SearchScreen> {
       ),
     );
   }
-
-  /// Section Widget
-// Widget _buildRecentClearAllRow() {
-//   return Obx(
-//         () => ListView.separated(
-//       physics: BouncingScrollPhysics(),
-//       shrinkWrap: true,
-//       separatorBuilder: (
-//           context,
-//           index,
-//           ) {
-//         return SizedBox(
-//           height: 16.v,
-//         );
-//       },
-//       itemCount: searchController
-//           .searchModelObj.value.recentclearallrowItemList.value.length,
-//       itemBuilder: (context, index) {
-//         RecentclearallrowItemModel model = searchController
-//             .searchModelObj.value.recentclearallrowItemList.value[index];
-//         return RecentclearallrowItemWidget(
-//           model,
-//         );
-//       },
-//     ),
-//   );
-// }
 }
