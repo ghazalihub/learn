@@ -20,12 +20,13 @@ class _Onboarding1ScreenState extends State<Onboarding1Screen> {
  @override
  Widget build(BuildContext context) {
   mediaQueryData = MediaQuery.of(context);
-  return WillPopScope(
-   onWillPop: () async {
+  return PopScope(
+   canPop: true,
+   onPopInvokedWithResult: (didPop, result) {
+    if (didPop) return;
     closeApp();
-    return true;
    },
-    child: Scaffold(
+   child: Scaffold(
         body: SafeArea(
           child: GetBuilder<Onboarding1Controller>(
             init: Onboarding1Controller(),

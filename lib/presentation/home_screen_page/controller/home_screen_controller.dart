@@ -11,6 +11,7 @@ class HomeScreenController extends GetxController {
   RxList<CategoryModel> categories = <CategoryModel>[].obs;
   RxList<CourseModel> featuredCourses = <CourseModel>[].obs;
   RxList<CourseModel> popularCourses = <CourseModel>[].obs;
+  RxList<InstructorModel> instructors = <InstructorModel>[].obs;
   RxBool isLoading = true.obs;
 
   HomeScreenController(this.homeScreenModelObj);
@@ -26,10 +27,23 @@ class HomeScreenController extends GetxController {
   Future<void> loadData() async {
     isLoading.value = true;
     try {
-      banners.value = await _repo.getBanners();
-      categories.value = await _repo.getCategories();
-      featuredCourses.value = await _repo.getFeaturedCourses();
-      popularCourses.value = await _repo.getCourses();
+      final remoteData = await _repo.apiClient.fetchCourseData();
+      if (remoteData.isNotEmpty) {
+        if (remoteData['banners'] != null) {
+          banners.value = (remoteData['banners'] as List).map((e) => BannerModel.fromJson(e)).toList();
+        }
+        if (remoteData['categories'] != null) {
+          categories.value = (remoteData['categories'] as List).map((e) => CategoryModel.fromJson(e)).toList();
+        }
+        if (remoteData['courses'] != null) {
+          final allCourses = (remoteData['courses'] as List).map((e) => CourseModel.fromJson(e)).toList();
+          featuredCourses.value = allCourses.where((c) => c.isFeatured == true).toList();
+          popularCourses.value = allCourses;
+        }
+        if (remoteData['instructors'] != null) {
+          instructors.value = (remoteData['instructors'] as List).map((e) => InstructorModel.fromJson(e)).toList();
+        }
+      }
     } catch (e) {
       print("Error loading home data: $e");
     } finally {

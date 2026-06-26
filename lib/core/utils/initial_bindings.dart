@@ -5,6 +5,7 @@ import 'package:flutter_elearning_app/services/auth_service.dart';
 import 'package:flutter_elearning_app/services/cache_service.dart';
 import 'package:flutter_elearning_app/services/cart_service.dart';
 import 'package:flutter_elearning_app/services/payment_service.dart';
+import 'package:flutter_elearning_app/services/ad_service.dart';
 
 class InitialBindings extends Bindings {
   @override
@@ -16,6 +17,7 @@ class InitialBindings extends Bindings {
     Get.put(AuthService());
     Get.put(CartService());
     Get.put(PaymentService());
+    Get.put(AdService());
     Connectivity connectivity = Connectivity();
     Get.put(NetworkInfo(connectivity));
   }

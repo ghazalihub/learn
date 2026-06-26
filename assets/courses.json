@@ -5,7 +5,7 @@
       "id": "course_001",
       "title": "Tajweed for Beginners",
       "category": "Tajweed",
-      "description": "Learn the fundamentals of Tajweed, the art of reciting the Quran with proper pronunciation and rhythm.",
+      "description": "Learn the fundamentals of Tajweed, the art of reciting the Quran with proper pronunciation and rhythm. This course covers basic rules and practical exercises.",
       "thumbnailUrl": "https://images.unsplash.com/photo-1584281723351-9d9224482032?q=80&w=1000&auto=format&fit=crop",
       "instructorName": "Ustaz Maulidya",
       "instructorImage": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1000&auto=format&fit=crop",
@@ -23,14 +23,57 @@
           "youtubeUrl": "https://www.youtube.com/watch?v=kY67Z3wD8vM",
           "isPreview": true,
           "order": 1
+        },
+        {
+          "id": "lesson_002",
+          "title": "Makharij al-Huruf",
+          "duration": "20 Min",
+          "youtubeUrl": "https://www.youtube.com/watch?v=S3O8W2vT9lM",
+          "isPreview": false,
+          "order": 2
+        }
+      ]
+    },
+    {
+      "id": "course_002",
+      "title": "Introduction to Hadith",
+      "category": "Hadith",
+      "description": "An introductory course on the science of Hadith, exploring the history, classification, and importance of the prophetic traditions.",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1590076215667-875d4ef2d97e?q=80&w=1000&auto=format&fit=crop",
+      "instructorName": "Sheikh Ahmed",
+      "instructorImage": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop",
+      "price": 0,
+      "currency": "USD",
+      "isFree": true,
+      "isFeatured": true,
+      "validityDays": 365,
+      "lastEditDate": "2025-05-20T00:00:00Z",
+      "lessons": [
+        {
+          "id": "lesson_101",
+          "title": "What is Hadith?",
+          "duration": "12 Min",
+          "youtubeUrl": "https://www.youtube.com/watch?v=D_9vP_Kx-4A",
+          "isPreview": true,
+          "order": 1
         }
       ]
     }
   ],
   "categories": [
-    { "id": "quran", "title": "Quran", "icon": "assets/images/quran_icon.svg", "colorHex": "#EEF2FF" }
+    { "id": "quran", "title": "Quran", "icon": "assets/images/quran_icon.svg", "colorHex": "#EEF2FF" },
+    { "id": "hadith", "title": "Hadith", "icon": "assets/images/hadith_icon.svg", "colorHex": "#F0FDF4" },
+    { "id": "fiqh", "title": "Fiqh", "icon": "assets/images/fiqh_icon.svg", "colorHex": "#FFF7ED" },
+    { "id": "seerah", "title": "Seerah", "icon": "assets/images/seerah_icon.svg", "colorHex": "#FEF2F2" },
+    { "id": "arabic", "title": "Arabic", "icon": "assets/images/arabic_icon.svg", "colorHex": "#F5F3FF" },
+    { "id": "tajweed", "title": "Tajweed", "icon": "assets/images/tajweed_icon.svg", "colorHex": "#ECFDF5" }
   ],
   "banners": [
-    { "imageUrl": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1000&auto=format&fit=crop", "linkCourseId": "course_001", "title": "Master Tajweed Today" }
+    { "imageUrl": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1000&auto=format&fit=crop", "linkCourseId": "course_001", "title": "Master Tajweed Today" },
+    { "imageUrl": "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=1000&auto=format&fit=crop", "linkCourseId": "course_002", "title": "Learn Hadith for Free" }
+  ],
+  "instructors": [
+    { "id": "inst_001", "name": "Ustaz Maulidya", "image": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1000&auto=format&fit=crop", "role": "Tajweed Expert" },
+    { "id": "inst_002", "name": "Sheikh Ahmed", "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop", "role": "Hadith Scholar" }
   ]
 }

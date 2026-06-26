@@ -16,12 +16,13 @@ class CourseDetailsScreen extends GetWidget<CourseDetailsController> {
   @override
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
-    return WillPopScope(
-      onWillPop: () async {
-        Get.back();
-        return false;
-      },
-      child: Scaffold(
+    return PopScope(
+   canPop: false,
+   onPopInvokedWithResult: (didPop, result) {
+    if (didPop) return;
+    Get.back();
+   },
+   child: Scaffold(
           backgroundColor: appTheme.bgColor,
           body: SizedBox(
               width: double.maxFinite,

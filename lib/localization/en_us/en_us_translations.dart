@@ -1,19 +1,19 @@
 final Map<String, String> enUs = {
   // Splash Screen Screen
-  "lbl_e_learning_app": "E-learning app",
+  "lbl_e_learning_app": "Islamic Learning",
 
   // 01 Onboarding Screen Screen
   "msg_electronic_learning":
-      "Electronic learning, is the delivery of learning \nand training through digital resources.",
+      "Islamic education delivered digitally \nfor your spiritual growth.",
   "msg_learn_new_skills":
-      "Learn new skills and advance your career with learning",
+      "Learn your Deen and advance your knowledge",
 
   // 01 Onboarding Screen One Screen
-  "msg_the_most_convenient": "The most convenient and effective way to learn.",
+  "msg_the_most_convenient": "The most convenient and effective way to learn Islam.",
 
   // 03 Onboarding Screen Screen
-  "lbl_get_started": "Get started",
-  "msg_learn_at_your_own": "Learn at your own time, with digital learning.",
+  "lbl_get_started": "Bismillah",
+  "msg_learn_at_your_own": "Learn at your own pace with Islamic experts.",
 
   // 02 Log In Screen wirh error Screen
   "msg_please_enter_a_valid": "Please enter a valid email address",
@@ -50,22 +50,22 @@ final Map<String, String> enUs = {
   "lbl_book_now": "Book now",
   "lbl_popular_courses": "Popular courses",
   "lbl_welcome_back": "Welcome back,",
-  "msg_featured_courses": "Featured courses",
-  "msg_learn_new_skills2": "Learn New Skills, adv\nance Your Career",
-  "msg_master_the_art_of": "Master the art of coding with our online courses",
-  "msg_online_courses_that": "Online courses that fit your busy schedule",
-  "msg_popular_instructors": "Popular instructors",
-  "msg_ronald_richards": "Ronald richards 👋🏻",
-  "msg_senior_ui_designer": "Senior ui designer ",
-  "msg_welcome_back_ronald": "Welcome back, \nRonald richards 👋🏻",
+  "msg_featured_courses": "Featured Courses",
+  "msg_learn_new_skills2": "Learn Your Deen, \nAdvance Your Knowledge",
+  "msg_master_the_art_of": "Master the art of Tajweed online",
+  "msg_online_courses_that": "Islamic courses that fit your schedule",
+  "msg_popular_instructors": "Popular Teachers",
+  "msg_ronald_richards": "Student 👋🏻",
+  "msg_senior_ui_designer": "Islamic Scholar",
+  "msg_welcome_back_ronald": "Welcome back, \nStudent 👋🏻",
 
   // 02 Categories Screen
-  "lbl_cloud_security": "Cloud security",
-  "lbl_data_analysis": "data analysis",
-  "lbl_machine_learn": "Machine learn",
-  "lbl_marketing": "Marketing",
-  "lbl_physics": "Physics",
-  "lbl_stock_market": "Stock market",
+  "lbl_cloud_security": "Quran",
+  "lbl_data_analysis": "Hadith",
+  "lbl_machine_learn": "Fiqh",
+  "lbl_marketing": "Seerah",
+  "lbl_physics": "Arabic",
+  "lbl_stock_market": "Tajweed",
 
   // 03 Featured course Screen
   "lbl_featured_course": "Featured course",

@@ -9,6 +9,8 @@ import '../featured_course_screen/widgets/favoritegrid_item_widget.dart';
 import 'controller/featured_course_controller.dart';
 import 'models/favoritegrid_item_model.dart';
 
+
+
 class FeaturedCourseScreen extends StatefulWidget {
   const FeaturedCourseScreen({super.key});
 
@@ -17,25 +19,22 @@ class FeaturedCourseScreen extends StatefulWidget {
 }
 
 class _FeaturedCourseScreenState extends State<FeaturedCourseScreen> {
- FeaturedCourseController featuredCourseController = Get.put(FeaturedCourseController());
+ FeaturedCourseController controller = Get.put(FeaturedCourseController());
  @override
  Widget build(BuildContext context) {
   mediaQueryData = MediaQuery.of(context);
-  return WillPopScope(
-    onWillPop: () async {
-      Get.back();
-      return true;
-    },
-    child: Scaffold(
+  return PopScope(
+   canPop: true,
+   onPopInvokedWithResult: (didPop, result) {
+    if (didPop) return;
+    // Get.back();
+   },
+   child: Scaffold(
       backgroundColor: appTheme.bgColor,
         body: SafeArea(
           child: SizedBox(
               width: double.maxFinite,
-              child: Obx(() {
-                if (featuredCourseController.isLoading.value) {
-                  return Center(child: CircularProgressIndicator());
-                }
-                return Column(children: [
+              child: Obx(() => controller.isLoading.value ? Center(child: CircularProgressIndicator()) : Column(children: [
                  _buildHeader(),
                  SizedBox(height: 24.v),
                   Expanded(
@@ -49,27 +48,19 @@ class _FeaturedCourseScreenState extends State<FeaturedCourseScreen> {
                                   mainAxisSpacing: 16.h,
                                   crossAxisSpacing: 16.h),
                               physics: BouncingScrollPhysics(),
-                              itemCount: featuredCourseController.featuredCourses.length,
+                              itemCount: controller.courses.length,
                               itemBuilder: (context, index) {
-                                var model = featuredCourseController
-                                    .featuredCourses[index];
+                                var model = controller.courses[index];
                                 return animationfunction(index, FavoritegridItemWidget(
-                                  FavoritegridItemModel(
-                                    model.thumbnailUrl,
-                                    model.title,
-                                    model.instructorImage,
-                                    model.instructorName,
-                                    model.category,
-                                    "${model.currency} ${model.price}",
-                                    false
-                                  ),
+                                  FavoritegridItemModel(model.thumbnailUrl, model.title, model.instructorImage, model.instructorName, model.category, "${model.currency} ${model.price}", false),
                                   onTapFund: () {
-                                  onTapFund(model);
-                                }));
+                                    Get.toNamed(AppRoutes.courseDetailsAboutScreen, arguments: model);
+                                  }
+                                ));
                               }))),
                   SizedBox(height: 24.v),
-                ]);
-              })),
+                ]),
+              )),
         )),
   );
  }
@@ -91,10 +82,33 @@ class _FeaturedCourseScreenState extends State<FeaturedCourseScreen> {
           title: AppbarSubtitle(text: "lbl_featured_course".tr)));
  }
 
- /// Navigates to the courseDetailsAboutScreen when the action is triggered.
- onTapFund(model) {
-  Get.toNamed(AppRoutes.courseDetailsAboutScreen, arguments: model);
- }
+ /// Section Widget
+ // Widget _buildFavoriteGrid() {
+ //  return Expanded(
+ //      child: Padding(
+ //          padding: EdgeInsets.symmetric(horizontal: 16.h),
+ //          child: Obx(() => GridView.builder(
+ //              shrinkWrap: true,
+ //              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+ //                  mainAxisExtent: 238.v,
+ //                  crossAxisCount: 2,
+ //                  mainAxisSpacing: 16.h,
+ //                  crossAxisSpacing: 16.h),
+ //              physics: BouncingScrollPhysics(),
+ //              itemCount: controller.featuredCourseModelObj.value
+ //                  .favoritegridItemList.value.length,
+ //              itemBuilder: (context, index) {
+ //               FavoritegridItemModel model = controller
+ //                   .featuredCourseModelObj
+ //                   .value
+ //                   .favoritegridItemList
+ //                   .value[index];
+ //               return FavoritegridItemWidget(model, onTapFund: () {
+ //                onTapFund();
+ //               });
+ //              }))));
+ // }
+
 
  /// Navigates to the previous screen.
  onTapArrowLeft() {

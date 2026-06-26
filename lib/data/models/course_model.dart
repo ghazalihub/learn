@@ -13,8 +13,9 @@ class CourseModel {
   int? validityDays;
   DateTime? lastEditDate;
   List<LessonModel>? lessons;
+  List<ReviewModel>? reviews;
 
-  CourseModel({this.id, this.title, this.category, this.description, this.thumbnailUrl, this.instructorName, this.instructorImage, this.price, this.currency, this.isFree, this.isFeatured, this.validityDays, this.lastEditDate, this.lessons});
+  CourseModel({this.id, this.title, this.category, this.description, this.thumbnailUrl, this.instructorName, this.instructorImage, this.price, this.currency, this.isFree, this.isFeatured, this.validityDays, this.lastEditDate, this.lessons, this.reviews});
 
   CourseModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -33,6 +34,10 @@ class CourseModel {
     if (json['lessons'] != null) {
       lessons = <LessonModel>[];
       json['lessons'].forEach((v) { lessons!.add(LessonModel.fromJson(v)); });
+    }
+    if (json['reviews'] != null) {
+      reviews = <ReviewModel>[];
+      json['reviews'].forEach((v) { reviews!.add(ReviewModel.fromJson(v)); });
     }
   }
 
@@ -54,6 +59,37 @@ class CourseModel {
     if (lessons != null) {
       data['lessons'] = lessons!.map((v) => v.toJson()).toList();
     }
+    if (reviews != null) {
+      data['reviews'] = reviews!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class ReviewModel {
+  String? id;
+  String? name;
+  String? image;
+  String? review;
+  double? rating;
+
+  ReviewModel({this.id, this.name, this.image, this.review, this.rating});
+
+  ReviewModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    image = json['image'];
+    review = json['review'];
+    rating = json['rating']?.toDouble();
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['image'] = image;
+    data['review'] = review;
+    data['rating'] = rating;
     return data;
   }
 }
@@ -126,6 +162,28 @@ class BannerModel {
     data['imageUrl'] = imageUrl;
     data['linkCourseId'] = linkCourseId;
     data['title'] = title;
+    return data;
+  }
+}
+
+class InstructorModel {
+  String? id;
+  String? name;
+  String? image;
+  String? role;
+  InstructorModel({this.id, this.name, this.image, this.role});
+  InstructorModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    image = json['image'];
+    role = json['role'];
+  }
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['image'] = image;
+    data['role'] = role;
     return data;
   }
 }

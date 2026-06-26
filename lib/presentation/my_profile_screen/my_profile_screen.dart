@@ -5,7 +5,9 @@ import 'package:flutter_elearning_app/widgets/app_bar/appbar_subtitle.dart';
 import 'package:flutter_elearning_app/widgets/app_bar/appbar_trailing_image.dart';
 import 'package:flutter_elearning_app/widgets/app_bar/custom_app_bar.dart';
 import 'controller/my_profile_controller.dart';
-import 'package:flutter_elearning_app/services/auth_service.dart';
+
+
+
 
 class MyProfileScreen extends StatefulWidget {
   const MyProfileScreen({super.key});
@@ -66,18 +68,11 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                       //             imagePath:
                       //             ImageConstant.imgCameraOnprimary))),
                       SizedBox(height: 40.v),
-                      Obx(() {
-                        final user = Get.find<AuthService>().currentUser.value;
-                        return Column(
-                          children: [
-                            _buildFrame("lbl_name".tr, user?.name ?? "Student"),
-                            SizedBox(height: 16.v),
-                            _buildFrame("lbl_email_address".tr, user?.email ?? "Not logged in"),
-                            SizedBox(height: 16.v),
-                            _buildFrame("lbl_phone_number".tr, user?.phone ?? "Not provided"),
-                          ],
-                        );
-                      }),
+                       _buildFrame("lbl_name".tr,"lbl_ronald_richards".tr),
+                      SizedBox(height: 16.v),
+                       _buildFrame("lbl_email_address".tr,"msg_ronaldrichards_gmail_com".tr),
+                      SizedBox(height: 16.v),
+                      _buildFrame("lbl_phone_number".tr,"lbl_405_555_0128".tr),
                       SizedBox(height: 5.v)
                      ]))
                 ]))),

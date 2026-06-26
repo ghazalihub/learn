@@ -2,7 +2,7 @@ import 'controller/profile_tab_container_controller.dart';
 import 'models/profile_tab_container_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elearning_app/core/app_export.dart';
-import 'package:flutter_elearning_app/presentation/profile_page/profile_page.dart';
+import 'package:flutter_elearning_app/presentation/my_profile_screen/my_profile_screen.dart';
 import 'package:flutter_elearning_app/widgets/app_bar/appbar_subtitle.dart';
 import 'package:flutter_elearning_app/widgets/app_bar/custom_app_bar.dart';
 
@@ -47,8 +47,8 @@ class _ProfileTabContainerPageState extends State<ProfileTabContainerPage> {
               child: TabBarView(
                 controller: controller.tabviewController,
                 children: [
-                  ProfilePage(),
-                  ProfilePage(),
+                  MyProfileScreen(),
+                  MyProfileScreen(),
                 ],
               ),
             ),

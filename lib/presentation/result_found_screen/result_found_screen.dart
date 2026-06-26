@@ -48,7 +48,7 @@ class ResultFoundScreen extends GetWidget<ResultFoundController> {
                                 contentPadding:
                                     EdgeInsets.symmetric(vertical: 18.v),
                                 borderDecoration:
-                                    TextFormFieldStyleHelper.fillGrayTL161,
+                                    CustomTextFormFieldStyleHelper.fillGrayTL161,
                                 fillColor: appTheme.gray10001),
                             SizedBox(height: 18.v),
                             Align(

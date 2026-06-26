@@ -1,8 +1,12 @@
+
+/// This class is used in the [fundlist_item_widget] screen.
+
 class FundlistItemModel {
   String? image;
   String? title;
-  String? time;
-  String? progress;
-  double? progressValue;
-  FundlistItemModel(this.image, this.title, this.time, this.progress, this.progressValue);
+  String? instructorImage;
+  String? instructorName;
+  String? category;
+  double? progress;
+  FundlistItemModel(this.image, this.title, this.instructorImage, this.instructorName, this.category, this.progress);
 }

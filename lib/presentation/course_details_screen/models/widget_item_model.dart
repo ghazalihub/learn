@@ -1,7 +1,11 @@
+
+/// This class is used in the [widget_item_widget] screen.
+
 class WidgetItemModel {
-  String? lessonNo;
   String? title;
   String? min;
   bool? isComplete;
-  WidgetItemModel(this.lessonNo, this.title, this.min, this.isComplete);
+  int? lessonNo;
+  String? videoUrl;
+  WidgetItemModel(this.title, this.min, this.isComplete, this.lessonNo, {this.videoUrl});
 }

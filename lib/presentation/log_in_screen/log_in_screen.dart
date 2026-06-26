@@ -24,10 +24,11 @@ class _LogInScreenState extends State<LogInScreen> {
  @override
  Widget build(BuildContext context) {
   mediaQueryData = MediaQuery.of(context);
-  return WillPopScope(
-   onWillPop: () async{
+  return PopScope(
+   canPop: false,
+   onPopInvokedWithResult: (didPop, result) {
+    if (didPop) return;
     closeApp();
-    return false;
    },
    child: Scaffold(
      backgroundColor: appTheme.bgColor,
@@ -164,15 +165,13 @@ class _LogInScreenState extends State<LogInScreen> {
 
  /// Section Widget
  Widget _buildLoginButton() {
-  return CustomElevatedButton(
-      text: "lbl_log_in".tr,
-      onPressed: () {
+  return Obx(() => CustomElevatedButton(
+      text: controller.isLoading.value ? "Loading..." : "lbl_log_in".tr,
+      onPressed: controller.isLoading.value ? null : () {
         if(_formKey.currentState!.validate()){
-          PrefUtils.setIsSignIn(false);
-          onTapLoginButton();
+          controller.login();
         }
-
-      });
+      }));
  }
 
  /// Section Widget

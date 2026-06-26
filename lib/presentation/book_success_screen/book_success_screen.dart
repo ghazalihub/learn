@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_elearning_app/core/app_export.dart';
+import 'package:flutter_elearning_app/services/ad_service.dart';
 import 'package:flutter_elearning_app/widgets/custom_elevated_button.dart';
 
 import 'controller/book_success_controller.dart';
@@ -19,12 +20,13 @@ class _BookSuccessScreenState extends State<BookSuccessScreen> {
  @override
  Widget build(BuildContext context) {
   mediaQueryData = MediaQuery.of(context);
-  return WillPopScope(
-   onWillPop: ()async{
-   Get.toNamed(AppRoutes.homeScreenContainerScreen);
-   return false;
+  return PopScope(
+   canPop: false,
+   onPopInvokedWithResult: (didPop, result) {
+    if (didPop) return;
+    Get.toNamed(AppRoutes.homeScreenContainerScreen);
    },
-    child: Scaffold(
+   child: Scaffold(
       backgroundColor: appTheme.bgColor,
         body: Container(
             width: double.maxFinite,
@@ -53,7 +55,9 @@ class _BookSuccessScreenState extends State<BookSuccessScreen> {
                      text: "lbl_go_to_home".tr,
                      margin: EdgeInsets.only(left: 39.h, right: 37.h),
                      onPressed: () {
-                      onTapGoToHome();
+                      Get.find<AdService>().showInterstitialAd(onAdDismissed: () {
+                        onTapGoToHome();
+                      });
                      }),
                  SizedBox(height: 5.v)
                 ]))),

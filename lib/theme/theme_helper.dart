@@ -60,7 +60,7 @@ class ThemeHelper {
       colorScheme: colorScheme,
       textTheme: TextThemes.textTheme(colorScheme),
       scaffoldBackgroundColor: appTheme.whiteA700,
-      dialogTheme: DialogTheme(backgroundColor: PrefUtils().getThemeData() == "primary"?appTheme.whiteA700:appTheme.darkInput),
+      dialogTheme: DialogThemeData(backgroundColor: PrefUtils().getThemeData() == "primary"?appTheme.whiteA700:appTheme.darkInput),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           elevation: 0,
@@ -458,4 +458,10 @@ Widget phone_number_field(controller,String? Function(String?)? validator){
       print(phone.completeNumber);
     },
   );
+}
+class CustomTextFormFieldStyleHelper {
+  static OutlineInputBorder get fillGrayTL161 => OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16.h),
+        borderSide: BorderSide.none,
+      );
 }

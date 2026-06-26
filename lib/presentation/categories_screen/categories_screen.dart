@@ -3,6 +3,7 @@ import 'package:flutter_elearning_app/core/app_export.dart';
 import 'package:flutter_elearning_app/widgets/app_bar/appbar_leading_image.dart';
 import 'package:flutter_elearning_app/widgets/app_bar/appbar_subtitle.dart';
 import 'package:flutter_elearning_app/widgets/app_bar/custom_app_bar.dart';
+import 'package:flutter_elearning_app/widgets/banner_ad_widget.dart';
 
 import '../categories_screen/widgets/categoriesgrid_item_widget.dart';
 import 'controller/categories_controller.dart';
@@ -29,7 +30,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             width: double.maxFinite,
             child: Column(children: [
              _buildHeader(),
-             SizedBox(height: 24.v),
+             SizedBox(height: 10.v),
+             BannerAdWidget(),
+             SizedBox(height: 14.v),
              _buildCategoriesGrid()
             ])),
       ));
@@ -57,7 +60,11 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   return Expanded(
       child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.h),
-          child: GridView.builder(
+          child: Obx(() {
+            if (controller.isLoading.value) {
+              return Center(child: CircularProgressIndicator());
+            }
+            return GridView.builder(
               shrinkWrap: true,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   mainAxisExtent: 130.v,
@@ -67,9 +74,12 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               physics: BouncingScrollPhysics(),
               itemCount: controller.categories.length,
               itemBuilder: (context, index) {
-               CategoriesgridItemModel model = controller.categories[index];
-               return animationfunction(index, CategoriesgridItemWidget(model));
-              })));
+               var model = controller.categories[index];
+               return animationfunction(index, CategoriesgridItemWidget(
+                 CategoriesgridItemModel(model.icon, model.title, Color(int.parse(model.colorHex!.replaceFirst('#', '0xff'))), index)
+               ));
+              });
+          })));
  }
 
  /// Navigates to the previous screen.
