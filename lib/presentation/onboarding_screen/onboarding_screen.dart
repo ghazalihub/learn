@@ -49,7 +49,7 @@ class OnboardingScreen extends GetWidget<OnboardingController> {
                               spacing: 6,
                               activeDotColor: theme.colorScheme.primary,
                               dotColor:
-                                  theme.colorScheme.primary.withOpacity(0.46),
+                                  theme.colorScheme.primary.withValues(alpha: 0.46),
                               dotHeight: 7.v,
                               dotWidth: 7.h)))),
                   SizedBox(height: 32.v),

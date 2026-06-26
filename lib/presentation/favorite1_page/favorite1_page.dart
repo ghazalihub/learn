@@ -5,7 +5,7 @@ import '../../widgets/app_bar/appbar_subtitle.dart';
 import '../../widgets/app_bar/custom_app_bar.dart';
 import '../../widgets/app_bar/custum_bottom_bar_controller.dart';
 import '../../widgets/custom_elevated_button.dart';
-import '../featured_course_screen/models/favoritegrid_item_model.dart';
+import 'package:flutter_elearning_app/data/models/course_model.dart';
 import '../featured_course_screen/widgets/favoritegrid_item_widget.dart';
 import 'controller/favorite1_controller.dart';
 
@@ -96,12 +96,12 @@ class _Favorite1PageState extends State<Favorite1Page> {
                       physics: BouncingScrollPhysics(),
                       itemCount: controller.favouriteList.length,
                       itemBuilder: (context, index) {
-                        FavoritegridItemModel model =
+                        CourseModel model =
                             controller.favouriteList[index];
                         return animationfunction(
                             index,
                             FavoritegridItemWidget(model, onTapFund: () {
-                              Get.toNamed(AppRoutes.courseDetailsAboutScreen);
+                              Get.toNamed(AppRoutes.courseDetailsAboutScreen, arguments: model);
                             }));
                       }))),
         ],

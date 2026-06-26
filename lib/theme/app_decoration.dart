@@ -4,7 +4,7 @@ import 'package:flutter_elearning_app/core/app_export.dart';
 class AppDecoration {
   // Fill decorations
   static BoxDecoration get fillBlack => BoxDecoration(
-        color: appTheme.black900.withOpacity(0.2),
+        color: appTheme.black900.withValues(alpha: 0.2),
       );
   static BoxDecoration get fillBlue => BoxDecoration(
         color: appTheme.blue5001,
@@ -52,8 +52,8 @@ class AppDecoration {
           begin: Alignment(0.54, -1.24),
           end: Alignment(0.5, 1),
           colors: [
-            appTheme.black900.withOpacity(0.4),
-            appTheme.black900.withOpacity(0),
+            appTheme.black900.withValues(alpha: 0.4),
+            appTheme.black900.withValues(alpha: 0),
           ],
         ),
       );
@@ -62,8 +62,8 @@ class AppDecoration {
           begin: Alignment(0.5, 0.81),
           end: Alignment(0.5, 1),
           colors: [
-            appTheme.black900.withOpacity(0),
-            appTheme.black900.withOpacity(0.63),
+            appTheme.black900.withValues(alpha: 0),
+            appTheme.black900.withValues(alpha: 0.63),
           ],
         ),
       );
@@ -73,7 +73,7 @@ class AppDecoration {
         color: appTheme.whiteA700,
         boxShadow: [
           BoxShadow(
-            color: appTheme.black900.withOpacity(0.03),
+            color: appTheme.black900.withValues(alpha: 0.03),
             spreadRadius: 2.h,
             blurRadius: 2.h,
             offset: Offset(

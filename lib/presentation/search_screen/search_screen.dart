@@ -1,12 +1,12 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart' hide SearchController;
+import 'package:flutter_elearning_app/data/models/course_model.dart';
 import 'package:flutter_elearning_app/core/app_export.dart';
 import 'package:flutter_elearning_app/widgets/custom_search_view.dart';
 
 import '../../widgets/custom_text_form_field.dart';
 import '../featured_course_screen/controller/featured_course_controller.dart';
-import '../featured_course_screen/models/favoritegrid_item_model.dart';
 import '../featured_course_screen/widgets/favoritegrid_item_widget.dart';
 import 'controller/search_controller.dart';
 import 'models/recentclearallrow_item_model.dart';
@@ -143,7 +143,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                   itemCount: featuredCourseController
                                       .featuredCourceList.length,
                                   itemBuilder: (context, index) {
-                                    FavoritegridItemModel model =
+                                    CourseModel model =
                                         featuredCourseController
                                             .featuredCourceList[index];
                                     return animationfunction(
@@ -151,7 +151,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                         FavoritegridItemWidget(model,
                                             onTapFund: () {
                                           Get.toNamed(AppRoutes
-                                              .courseDetailsAboutScreen);
+                                              .courseDetailsAboutScreen, arguments: model);
                                         }));
                                   })))
                       : ListView.builder(

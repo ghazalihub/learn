@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_elearning_app/data/models/course_model.dart';
 import 'package:flutter_elearning_app/core/app_export.dart';
 import 'package:flutter_elearning_app/widgets/app_bar/appbar_leading_image.dart';
 import 'package:flutter_elearning_app/widgets/app_bar/appbar_subtitle.dart';
@@ -6,7 +7,6 @@ import 'package:flutter_elearning_app/widgets/app_bar/custom_app_bar.dart';
 
 import '../categories_screen/widgets/categoriesgrid_item_widget.dart';
 import 'controller/categories_controller.dart';
-import 'models/categoriesgrid_item_model.dart';
 
 
 
@@ -67,7 +67,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               physics: BouncingScrollPhysics(),
               itemCount: controller.categories.length,
               itemBuilder: (context, index) {
-               CategoriesgridItemModel model = controller.categories[index];
+                  CategoryModel model = controller.categories[index];
                return animationfunction(index, CategoriesgridItemWidget(model));
               })));
  }

@@ -51,12 +51,12 @@ class CustomIconButton extends StatelessWidget {
             padding: padding ?? EdgeInsets.zero,
             decoration: decoration ??
                 BoxDecoration(
-                  color: appTheme.iconButtonbgColor.withOpacity(0.7),
-                  // color: appTheme.whiteA700.withOpacity(0.7),
+                  color: appTheme.iconButtonbgColor.withValues(alpha: 0.7),
+                  // color: appTheme.whiteA700.withValues(alpha: 0.7),
                   borderRadius: BorderRadius.circular(14.h),
                   boxShadow: [
                     BoxShadow(
-                      color: appTheme.black900.withOpacity(0.1),
+                      color: appTheme.black900.withValues(alpha: 0.1),
                       spreadRadius: 2.h,
                       blurRadius: 2.h,
                       offset: Offset(
@@ -93,7 +93,7 @@ extension IconButtonStyleHelper on CustomIconButton {
         borderRadius: BorderRadius.circular(27.h),
       );
   static BoxDecoration get fillWhiteATL8 => BoxDecoration(
-        color: appTheme.whiteA700.withOpacity(0.7),
+        color: appTheme.whiteA700.withValues(alpha: 0.7),
         borderRadius: BorderRadius.circular(8.h),
       );
   static BoxDecoration get fillWhiteATL14 => BoxDecoration(
@@ -105,7 +105,7 @@ extension IconButtonStyleHelper on CustomIconButton {
         borderRadius: BorderRadius.circular(20.h),
         boxShadow: [
           BoxShadow(
-            color: appTheme.black900.withOpacity(0.06),
+            color: appTheme.black900.withValues(alpha: 0.06),
             spreadRadius: 2.h,
             blurRadius: 2.h,
             offset: Offset(
@@ -128,7 +128,7 @@ extension IconButtonStyleHelper on CustomIconButton {
         borderRadius: BorderRadius.circular(14.h),
         boxShadow: [
           BoxShadow(
-            color: appTheme.black900.withOpacity(0.05),
+            color: appTheme.black900.withValues(alpha: 0.05),
 
             blurRadius: 15.h,
             offset: Offset(
@@ -139,7 +139,7 @@ extension IconButtonStyleHelper on CustomIconButton {
         ],
       );
   static BoxDecoration get fillWhiteATL20 => BoxDecoration(
-        color: appTheme.iconButtonbgColor.withOpacity(0.7),
+        color: appTheme.iconButtonbgColor.withValues(alpha: 0.7),
         borderRadius: BorderRadius.circular(20.h),
       );
 }

@@ -95,7 +95,7 @@ class ChatlistItemWidget extends StatelessWidget {
                     boxShadow: [
                       BoxShadow(offset: Offset(0, 4),
                       blurRadius: 15,
-                      color: appTheme.black900.withOpacity(0.06))
+                      color: appTheme.black900.withValues(alpha: 0.06))
                     ]
               ),
                 child: Padding(

@@ -119,7 +119,6 @@ class MyCoursesScreen extends GetWidget<MyCoursesController> {
         return AppRoutes.chatsPage;
       case BottomBarEnum.Profile:
         return AppRoutes.profileTabContainerPage;
-      default:
         return "/";
     }
   }

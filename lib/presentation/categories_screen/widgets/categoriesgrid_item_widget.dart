@@ -1,5 +1,5 @@
 import '../controller/categories_controller.dart';
-import '../models/categoriesgrid_item_model.dart';
+import '../../../data/models/course_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elearning_app/core/app_export.dart';
 import 'package:flutter_elearning_app/widgets/custom_icon_button.dart';
@@ -13,7 +13,7 @@ class CategoriesgridItemWidget extends StatelessWidget {
           key: key,
         );
 
-  CategoriesgridItemModel categoriesgridItemModelObj;
+  CategoryModel categoriesgridItemModelObj;
 
   var controller = Get.find<CategoriesController>();
 
@@ -25,7 +25,7 @@ class CategoriesgridItemWidget extends StatelessWidget {
         vertical: 8.v,
       ),
       decoration: AppDecoration.fillIndigo.copyWith(
-        color: categoriesgridItemModelObj.bgColor,
+        color: categoriesgridItemModelObj.colorHex != null ? Color(int.parse(categoriesgridItemModelObj.colorHex!.replaceFirst('#', '0xFF'))) : Colors.indigo.shade50,
         borderRadius: BorderRadiusStyle.roundedBorder12,
       ),
       child: Column(

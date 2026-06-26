@@ -50,8 +50,10 @@ class _HomeScreenContainerScreenState extends State<HomeScreenContainerScreen> {
   mediaQueryData = MediaQuery.of(context);
   return GetBuilder<CustomBottomBarController>(
    init: CustomBottomBarController(),
-   builder: (controller) => WillPopScope(
-    onWillPop: () async {
+   builder: (controller) => PopScope(
+    canPop: false,
+    onPopInvokedWithResult: (didPop, result) async {
+     if (didPop) return;
      if (controller.selectedIndex == 0) {
       showDialog(
        barrierDismissible: false,
@@ -123,9 +125,7 @@ class _HomeScreenContainerScreenState extends State<HomeScreenContainerScreen> {
       );
      } else {
       controller.getIndex(0);
-      // Get.back();
      }
-     return false;
     },
     child: Scaffold(
         backgroundColor: appTheme.bgColor,
@@ -153,7 +153,6 @@ class _HomeScreenContainerScreenState extends State<HomeScreenContainerScreen> {
     return AppRoutes.chatsPage;
    case BottomBarEnum.Profile:
     return AppRoutes.profileTabContainerPage;
-   default:
     return "/";
   }
  }
@@ -171,7 +170,7 @@ class _HomeScreenContainerScreenState extends State<HomeScreenContainerScreen> {
     return ChatsPage();
    case AppRoutes.profileTabContainerPage:
     return ProfileTabContainerPage();
-   default:
+   case BottomBarEnum.Profile: return ProfileTabContainerPage(); default:
     return DefaultWidget();
   }
  }
