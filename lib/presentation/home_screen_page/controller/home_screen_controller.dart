@@ -1,19 +1,30 @@
 import 'package:flutter/material.dart';
-
-/// A controller class for the HomeScreenPage.
 import 'package:flutter_elearning_app/core/app_export.dart';
 import 'package:flutter_elearning_app/presentation/home_screen_page/models/home_screen_model.dart';
+import 'package:flutter_elearning_app/data/repositories/course_repository.dart';
+import 'package:flutter_elearning_app/data/models/course_model.dart';
 
-import '../models/slidre_model.dart';
-
-///
-/// This class manages the state of the HomeScreenPage, including the
-/// current homeScreenModelObj
 class HomeScreenController extends GetxController {
- List<SliderData> sliderData = HomeScreenModel.getSliderData();
   HomeScreenController(this.homeScreenModelObj);
   TextEditingController searchController = TextEditingController();
   Rx<HomeScreenModel> homeScreenModelObj;
+
+  final CourseRepository _courseRepository = Get.find<CourseRepository>();
+
+  RxList<BannerModel> banners = <BannerModel>[].obs;
+  RxBool isLoading = true.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    loadData();
+  }
+
+  Future<void> loadData() async {
+    isLoading.value = true;
+    banners.value = await _courseRepository.getBanners();
+    isLoading.value = false;
+  }
 
   @override
   void onClose() {

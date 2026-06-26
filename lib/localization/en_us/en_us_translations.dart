@@ -1,19 +1,19 @@
 final Map<String, String> enUs = {
   // Splash Screen Screen
-  "lbl_e_learning_app": "E-learning app",
+  "lbl_e_learning_app": "Islamic Learning",
 
   // 01 Onboarding Screen Screen
   "msg_electronic_learning":
-      "Electronic learning, is the delivery of learning \nand training through digital resources.",
+      "Islamic learning is the delivery of knowledge \nand training through digital resources.",
   "msg_learn_new_skills":
-      "Learn new skills and advance your career with learning",
+      "Learn the Deen and advance your knowledge with us",
 
   // 01 Onboarding Screen One Screen
-  "msg_the_most_convenient": "The most convenient and effective way to learn.",
+  "msg_the_most_convenient": "The most convenient and effective way to learn Islam.",
 
   // 03 Onboarding Screen Screen
-  "lbl_get_started": "Get started",
-  "msg_learn_at_your_own": "Learn at your own time, with digital learning.",
+  "lbl_get_started": "Bismillah",
+  "msg_learn_at_your_own": "Learn at your own time, with our digital platform.",
 
   // 02 Log In Screen wirh error Screen
   "msg_please_enter_a_valid": "Please enter a valid email address",
@@ -60,12 +60,12 @@ final Map<String, String> enUs = {
   "msg_welcome_back_ronald": "Welcome back, \nRonald richards 👋🏻",
 
   // 02 Categories Screen
-  "lbl_cloud_security": "Cloud security",
-  "lbl_data_analysis": "data analysis",
-  "lbl_machine_learn": "Machine learn",
-  "lbl_marketing": "Marketing",
-  "lbl_physics": "Physics",
-  "lbl_stock_market": "Stock market",
+  "lbl_cloud_security": "Quran",
+  "lbl_data_analysis": "Hadith",
+  "lbl_machine_learn": "Fiqh",
+  "lbl_marketing": "Seerah",
+  "lbl_physics": "Arabic",
+  "lbl_stock_market": "Tajweed",
 
   // 03 Featured course Screen
   "lbl_featured_course": "Featured course",

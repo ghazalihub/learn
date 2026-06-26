@@ -107,7 +107,6 @@ class FavoriteScreen extends GetWidget<FavoriteController> {
         return AppRoutes.chatsPage;
       case BottomBarEnum.Profile:
         return AppRoutes.profileTabContainerPage;
-      default:
         return "/";
     }
   }

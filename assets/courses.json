@@ -1,0 +1,87 @@
+{
+  "lastUpdated": "2025-06-01T00:00:00Z",
+  "courses": [
+    {
+      "id": "course_001",
+      "title": "Tajweed for Beginners",
+      "category": "Quran",
+      "description": "Learn the fundamentals of Tajweed to recite the Quran correctly.",
+      "thumbnailUrl": "https://img.youtube.com/vi/6f5S_v68m_g/0.jpg",
+      "instructorName": "Ustaz Maulidya",
+      "instructorImage": "https://i.pravatar.cc/150?u=instructor1",
+      "price": 0,
+      "currency": "IDR",
+      "isFree": true,
+      "isFeatured": true,
+      "rating": 4.8,
+      "reviewCount": 120,
+      "validityDays": 90,
+      "lastEditDate": "2025-05-15T00:00:00Z",
+      "lessons": [
+        {
+          "id": "lesson_001",
+          "title": "Introduction to Tajweed",
+          "duration": "15 Min",
+          "youtubeUrl": "https://www.youtube.com/watch?v=6f5S_v68m_g",
+          "isPreview": true,
+          "order": 1
+        },
+        {
+          "id": "lesson_002",
+          "title": "Makhaarij al-Huroof",
+          "duration": "20 Min",
+          "youtubeUrl": "https://www.youtube.com/watch?v=JmUvM-Y7hE0",
+          "isPreview": false,
+          "order": 2
+        }
+      ],
+      "reviews": [
+        {
+          "id": "rev_001",
+          "userName": "Ahmad",
+          "userImage": "https://i.pravatar.cc/150?u=user1",
+          "comment": "Very clear and easy to understand.",
+          "rating": 5,
+          "date": "2024-12-01"
+        }
+      ]
+    },
+    {
+      "id": "course_002",
+      "title": "Understanding Hadith",
+      "category": "Hadith",
+      "description": "An introductory course to the science of Hadith.",
+      "thumbnailUrl": "https://img.youtube.com/vi/8Y_vXfXy1uY/0.jpg",
+      "instructorName": "Sheikh Ahmed",
+      "instructorImage": "https://i.pravatar.cc/150?u=instructor2",
+      "price": 49.99,
+      "currency": "USD",
+      "isFree": false,
+      "isFeatured": true,
+      "rating": 4.5,
+      "reviewCount": 85,
+      "validityDays": 365,
+      "lastEditDate": "2025-05-20T00:00:00Z",
+      "lessons": [
+        {
+          "id": "lesson_003",
+          "title": "What is Hadith?",
+          "duration": "12 Min",
+          "youtubeUrl": "https://www.youtube.com/watch?v=8Y_vXfXy1uY",
+          "isPreview": true,
+          "order": 1
+        }
+      ]
+    }
+  ],
+  "categories": [
+    { "id": "quran", "title": "Quran", "icon": "assets/images/img_cat_science.svg", "colorHex": "#EEF2FF" },
+    { "id": "hadith", "title": "Hadith", "icon": "assets/images/img_cat_desigining.svg", "colorHex": "#F0FDF4" },
+    { "id": "fiqh", "title": "Fiqh", "icon": "assets/images/img_car.svg", "colorHex": "#FEFCE8" },
+    { "id": "seerah", "title": "Seerah", "icon": "assets/images/img_cat_code.svg", "colorHex": "#FFF1F2" }
+  ],
+  "banners": [
+    { "imageUrl": "https://placehold.co/600x400?text=Tajweed+Course", "linkCourseId": "course_001", "title": "Start Your Quran Journey" },
+    { "imageUrl": "https://placehold.co/600x400?text=Hadith+Course", "linkCourseId": "course_002", "title": "Master the Sunnah" }
+  ]
+}

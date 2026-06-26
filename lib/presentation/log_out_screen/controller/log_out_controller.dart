@@ -1,7 +1,11 @@
-import 'package:flutter_elearning_app/core/app_export.dart';import 'package:flutter_elearning_app/presentation/log_out_screen/models/log_out_model.dart';/// A controller class for the LogOutScreen.
-///
-/// This class manages the state of the LogOutScreen, including the
-/// current logOutModelObj
-class LogOutController extends GetxController {Rx<LogOutModel> logOutModelObj = LogOutModel().obs;
+import 'package:flutter_elearning_app/core/app_export.dart';
+import 'package:flutter_elearning_app/services/auth_service.dart';
 
- }
+class LogOutController extends GetxController {
+  final AuthService _authService = Get.find<AuthService>();
+
+  Future<void> logout() async {
+    await _authService.signOut();
+    Get.offAllNamed(AppRoutes.logInScreen);
+  }
+}

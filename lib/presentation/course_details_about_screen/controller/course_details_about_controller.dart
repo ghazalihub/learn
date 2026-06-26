@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-
-/// A controller class for the CourseDetailsAboutScreen.
 import 'package:flutter_elearning_app/core/app_export.dart';
-import 'package:flutter_elearning_app/presentation/course_details_about_screen/models/course_details_about_model.dart';
+import 'package:flutter_elearning_app/data/models/course_model.dart';
 
-///
-/// This class manages the state of the CourseDetailsAboutScreen, including the
-/// current courseDetailsAboutModelObj
 class CourseDetailsAboutController extends GetxController {
   TextEditingController elevenController = TextEditingController();
 
-  Rx<CourseDetailsAboutModel> courseDetailsAboutModelObj =
-      CourseDetailsAboutModel().obs;
-
+  Rxn<CourseModel> courseModel = Rxn<CourseModel>();
   int currentPage = 0;
+
+  @override
+  void onInit() {
+    super.onInit();
+    if (Get.arguments is CourseModel) {
+      courseModel.value = Get.arguments;
+    }
+  }
 
   @override
   void onClose() {

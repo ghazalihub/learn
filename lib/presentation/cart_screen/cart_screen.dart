@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_elearning_app/data/models/course_model.dart';
 import 'package:flutter_elearning_app/core/app_export.dart';
+import "package:flutter_elearning_app/presentation/cart_screen/controller/cart_controller.dart";
 import 'package:flutter_elearning_app/widgets/app_bar/appbar_leading_image.dart';
 import 'package:flutter_elearning_app/widgets/app_bar/appbar_subtitle.dart';
 import 'package:flutter_elearning_app/widgets/app_bar/custom_app_bar.dart';
 import 'package:flutter_elearning_app/widgets/custom_elevated_button.dart';
 import 'package:flutter_elearning_app/widgets/custom_search_view.dart';
 import 'package:flutter_elearning_app/widgets/custom_text_form_field.dart';
-import '../cart_screen/widgets/learnnewskillslist1_item_widget.dart';
-import 'controller/cart_controller.dart';
-import 'models/learnnewskillslist1_item_model.dart';
 
 
 
@@ -59,22 +58,22 @@ class _CartScreenState extends State<CartScreen> {
                                   child: Text("lbl_payment_summary".tr,
                                       style: theme.textTheme.titleMedium)),
                               SizedBox(height: 18.v),
-                              _buildTax(
+                              Obx(() => _buildTax(
                                   addOns: "lbl_item_total".tr,
-                                  price: "lbl_110_00".tr),
+                                  price: "\$${controller.totalAmount}")),
                               SizedBox(height: 19.v),
                               _buildTax(
                                   addOns: "lbl_add_ons".tr,
-                                  price: "lbl_10_00".tr),
+                                  price: "\$0.00"),
                               SizedBox(height: 19.v),
                               _buildTax(
-                                  addOns: "lbl_tax".tr, price: "lbl_2_00".tr),
+                                  addOns: "lbl_tax".tr, price: "\$0.00"),
                               SizedBox(height: 17.v),
                               Divider(),
                               SizedBox(height: 18.v),
-                              _buildTax(
+                              Obx(() => _buildTax(
                                   addOns: "msg_total_payment_amount".tr,
-                                  price: "lbl_122_00".tr),
+                                  price: "\$${controller.totalAmount}")),
                               SizedBox(height: 120.v),
                              ]))))
                 ]),
@@ -115,12 +114,46 @@ class _CartScreenState extends State<CartScreen> {
       separatorBuilder: (context, index) {
        return SizedBox(height: 16.v);
       },
-      itemCount: controller
-          .cartModelObj.value.learnnewskillslist1ItemList.value.length,
+      itemCount: controller.cartItems.length,
       itemBuilder: (context, index) {
-       Learnnewskillslist1ItemModel model = controller
-           .cartModelObj.value.learnnewskillslist1ItemList.value[index];
-       return Learnnewskillslist1ItemWidget(model);
+       CourseModel model = controller.cartItems[index];
+       return Container(
+         padding: EdgeInsets.all(12.h),
+         decoration: AppDecoration.fillGray.copyWith(
+           borderRadius: BorderRadiusStyle.roundedBorder12,
+         ),
+         child: Row(
+           children: [
+             CustomImageView(
+               imagePath: model.thumbnailUrl,
+               height: 80.adaptSize,
+               width: 80.adaptSize,
+               radius: BorderRadius.circular(8.h),
+             ),
+             SizedBox(width: 12.h),
+             Expanded(
+               child: Column(
+                 crossAxisAlignment: CrossAxisAlignment.start,
+                 children: [
+                   Text(
+                     model.title ?? "",
+                     style: theme.textTheme.titleSmall,
+                   ),
+                   SizedBox(height: 8.v),
+                   Text(
+                     "${model.currency ?? ""}${model.price ?? ""}",
+                     style: theme.textTheme.labelLarge,
+                   ),
+                 ],
+               ),
+             ),
+             IconButton(
+               icon: Icon(Icons.delete_outline, color: Colors.red),
+               onPressed: () => controller.removeFromCart(model),
+             )
+           ],
+         ),
+       );
       }));
  }
 

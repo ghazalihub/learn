@@ -1,16 +1,20 @@
-import 'package:flutter_elearning_app/core/app_export.dart';import 'package:flutter_elearning_app/presentation/payment_method_screen/models/payment_method_model.dart';import 'package:flutter/material.dart';/// A controller class for the PaymentMethodScreen.
-///
-/// This class manages the state of the PaymentMethodScreen, including the
-/// current paymentMethodModelObj
-class PaymentMethodController extends GetxController {TextEditingController searchController = TextEditingController();
+import 'package:flutter_elearning_app/core/app_export.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_elearning_app/presentation/cart_screen/controller/cart_controller.dart';
 
-Rx<PaymentMethodModel> paymentMethodModelObj = PaymentMethodModel().obs;
+class PaymentMethodController extends GetxController {
+  TextEditingController searchController = TextEditingController();
+  final CartController _cartController = Get.find<CartController>();
 
-Rx<String> radioGroup = "".obs;
+  double get totalAmount => _cartController.totalAmount;
 
-Rx<String> radioGroup1 = "".obs;
+  Future<void> payNow() async {
+    await _cartController.checkout();
+  }
 
-Rx<String> radioGroup2 = "".obs;
-
-@override void onClose() { super.onClose(); searchController.dispose(); } 
- }
+  @override
+  void onClose() {
+    super.onClose();
+    searchController.dispose();
+  }
+}

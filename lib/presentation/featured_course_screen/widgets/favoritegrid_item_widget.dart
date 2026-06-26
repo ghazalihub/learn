@@ -1,11 +1,8 @@
-import '../../favorite1_page/controller/favorite1_controller.dart';
-import '../controller/featured_course_controller.dart';
-import '../models/favoritegrid_item_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elearning_app/core/app_export.dart';
-import 'package:flutter_elearning_app/widgets/custom_icon_button.dart';
+import 'package:flutter_elearning_app/data/models/course_model.dart';
+import '../controller/featured_course_controller.dart';
 
-// ignore: must_be_immutable
 class FavoritegridItemWidget extends StatefulWidget {
   FavoritegridItemWidget(
     this.favoritegridItemModelObj, {
@@ -15,30 +12,25 @@ class FavoritegridItemWidget extends StatefulWidget {
           key: key,
         );
 
-  FavoritegridItemModel favoritegridItemModelObj;
-
-  VoidCallback? onTapFund;
+  final CourseModel favoritegridItemModelObj;
+  final VoidCallback? onTapFund;
 
   @override
   State<FavoritegridItemWidget> createState() => _FavoritegridItemWidgetState();
 }
 
 class _FavoritegridItemWidgetState extends State<FavoritegridItemWidget> {
-  Favorite1Controller favorite1Controller = Get.put(Favorite1Controller());
-  var controller = Get.find<FeaturedCourseController>();
-
   @override
   Widget build(BuildContext context) {
     return GetBuilder<FeaturedCourseController>(
       init: FeaturedCourseController(),
-      builder:(controller) =>  GestureDetector(
+      builder:(controller) => GestureDetector(
         onTap: () {
-          widget.onTapFund!.call();
+          widget.onTapFund?.call();
         },
         child: Container(
           padding: EdgeInsets.all(8.h),
           decoration: AppDecoration.fillGray.copyWith(
-
             borderRadius: BorderRadiusStyle.roundedBorder12,
           ),
           child: Column(
@@ -48,48 +40,12 @@ class _FavoritegridItemWidgetState extends State<FavoritegridItemWidget> {
               SizedBox(
                 height: 115.v,
                 width: 174.h,
-                child: Stack(
-                  alignment: Alignment.topRight,
-                  children: [
-                    CustomImageView(
-                      imagePath: widget.favoritegridItemModelObj.image!,
-                      height: 115.v,
-                      width: 174.h,
-                      radius: BorderRadius.circular(
-                        12.h,
-                      ),
-                      alignment: Alignment.center,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        top: 8.v,
-                        right: 8.h,
-                      ),
-                      child: CustomIconButton(
-                        onTap: () {
-                          widget.favoritegridItemModelObj.isLike =
-                              !widget.favoritegridItemModelObj.isLike!;
-                          if(widget.favoritegridItemModelObj.isLike!){
-                            favorite1Controller.favouriteList.add(widget.favoritegridItemModelObj);
-                            favorite1Controller.update();
-                          }
-                          else{
-                            favorite1Controller.favouriteList.remove(widget.favoritegridItemModelObj);
-                            favorite1Controller.update();
-                          }
-                          controller.update();
-                        },
-                        height: 28.adaptSize,
-                        width: 28.adaptSize,
-                        padding: EdgeInsets.all(6.h),
-                        alignment: Alignment.topRight,
-                        child: CustomImageView(
-                          color: appTheme.black900,
-                          imagePath:  widget.favoritegridItemModelObj.isLike!?ImageConstant.imgFavouriteIcon:ImageConstant.imgUnFavouriteIcon,
-                        ),
-                      ),
-                    ),
-                  ],
+                child: CustomImageView(
+                  imagePath: widget.favoritegridItemModelObj.thumbnailUrl,
+                  height: 115.v,
+                  width: 174.h,
+                  radius: BorderRadius.circular(12.h),
+                  alignment: Alignment.center,
                 ),
               ),
               SizedBox(height: 9.v),
@@ -98,7 +54,7 @@ class _FavoritegridItemWidgetState extends State<FavoritegridItemWidget> {
                 child: SizedBox(
                   width: 155.h,
                   child: Text(
-                    widget.favoritegridItemModelObj.title!,
+                    widget.favoritegridItemModelObj.title ?? "",
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: theme.textTheme.titleSmall!.copyWith(
@@ -117,12 +73,10 @@ class _FavoritegridItemWidgetState extends State<FavoritegridItemWidget> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       CustomImageView(
-                        imagePath: widget.favoritegridItemModelObj.userImage!,
+                        imagePath: widget.favoritegridItemModelObj.instructorImage,
                         height: 30.adaptSize,
                         width: 30.adaptSize,
-                        radius: BorderRadius.circular(
-                          15.h,
-                        ),
+                        radius: BorderRadius.circular(15.h),
                         margin: EdgeInsets.only(bottom: 2.v),
                       ),
                       Padding(
@@ -131,14 +85,14 @@ class _FavoritegridItemWidgetState extends State<FavoritegridItemWidget> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              widget.favoritegridItemModelObj.userName!,
+                              widget.favoritegridItemModelObj.instructorName ?? "",
                               style: theme.textTheme.labelLarge!.copyWith(
                                 color: appTheme.black900,
                               ),
                             ),
                             SizedBox(height: 2.v),
                             Text(
-                              widget.favoritegridItemModelObj.userType!,
+                              "Instructor",
                               style: theme.textTheme.bodySmall!.copyWith(
                                 color: appTheme.black900,
                               ),
@@ -149,13 +103,9 @@ class _FavoritegridItemWidgetState extends State<FavoritegridItemWidget> {
                     ],
                   ),
                   Padding(
-                    padding: EdgeInsets.only(
-                      left: 0.h,
-                      top: 7.v,
-                      bottom: 10.v,
-                    ),
+                    padding: EdgeInsets.only(left: 0.h, top: 7.v, bottom: 10.v),
                     child: Text(
-                      widget.favoritegridItemModelObj.price!,
+                      "${widget.favoritegridItemModelObj.currency ?? ""}${widget.favoritegridItemModelObj.price ?? ""}",
                       style: theme.textTheme.labelLarge!.copyWith(
                         color: appTheme.black900,
                       ),
@@ -163,7 +113,6 @@ class _FavoritegridItemWidgetState extends State<FavoritegridItemWidget> {
                   ),
                 ],
               ),
-
             ],
           ),
         ),

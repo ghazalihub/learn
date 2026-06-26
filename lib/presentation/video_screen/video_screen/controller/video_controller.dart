@@ -1,15 +1,17 @@
-
-
 import 'package:get/get.dart';
+import 'package:flutter_elearning_app/data/models/course_model.dart';
 
-import '../models/video_model.dart';
-
-/// A controller class for the VideoScreen.
-///
-/// This class manages the state of the VideoScreen, including the
-/// current videoModelObj
 class VideoController extends GetxController {
-  Rx<VideoModel> videoModelObj = VideoModel().obs;
   String youtubeUrl = "";
+  String? lessonTitle;
 
+  @override
+  void onInit() {
+    super.onInit();
+    if (Get.arguments is LessonModel) {
+      LessonModel lesson = Get.arguments;
+      youtubeUrl = lesson.youtubeUrl ?? "";
+      lessonTitle = lesson.title;
+    }
+  }
 }

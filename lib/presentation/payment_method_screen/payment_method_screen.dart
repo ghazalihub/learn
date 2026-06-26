@@ -124,12 +124,12 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
        Padding(
            padding: EdgeInsets.symmetric(vertical: 14.v),
-           child: Text("lbl_50_00".tr, style: theme.textTheme.titleLarge)),
+           child: Text("\$${paymentMethodController.totalAmount}", style: theme.textTheme.titleLarge)),
        CustomElevatedButton(
            width: 206.h,
            text: "lbl_pay_now".tr,
            onPressed: () {
-            onTapPayNow();
+            paymentMethodController.payNow();
            })
       ]));
  }
@@ -137,13 +137,6 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
  /// Navigates to the previous screen.
  onTapArrowLeft() {
   Get.back();
- }
-
- /// Navigates to the bookSuccessScreen when the action is triggered.
- onTapPayNow() {
-  Get.toNamed(
-   AppRoutes.bookSuccessScreen,
-  );
  }
 }
 

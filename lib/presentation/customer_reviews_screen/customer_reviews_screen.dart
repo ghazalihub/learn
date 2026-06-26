@@ -3,9 +3,9 @@ import 'package:flutter_elearning_app/core/app_export.dart';
 import 'package:flutter_elearning_app/widgets/app_bar/appbar_leading_image.dart';
 import 'package:flutter_elearning_app/widgets/app_bar/appbar_subtitle.dart';
 import 'package:flutter_elearning_app/widgets/app_bar/custom_app_bar.dart';
+import 'package:flutter_elearning_app/data/models/course_model.dart';
 import '../customer_reviews_screen/widgets/userprofile_item_widget.dart';
 import 'controller/customer_reviews_controller.dart';
-import 'models/userprofile_item_model.dart';
 
 
 
@@ -66,7 +66,7 @@ class _CustomerReviewsScreenState extends State<CustomerReviewsScreen> {
                 },
                 itemCount: controller.customerReviewList.length,
                 itemBuilder: (context, index) {
-                  UserprofileItemModel model = controller.customerReviewList[index];
+                  ReviewModel model = controller.customerReviewList[index];
                   return UserprofileItemWidget(model);
                 })));
   }

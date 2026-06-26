@@ -1,3 +1,4 @@
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_elearning_app/core/app_export.dart';
@@ -5,11 +6,10 @@ import 'package:flutter_elearning_app/presentation/video_screen/video_screen/con
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
+import '../../../services/ad_service.dart';
 import '../../../widgets/app_bar/appbar_leading_image.dart';
 
-
 class VideoScreen extends StatefulWidget {
-
   const VideoScreen({super.key});
 
   @override
@@ -18,6 +18,7 @@ class VideoScreen extends StatefulWidget {
 
 class _VideoScreenState extends State<VideoScreen> {
   VideoController videoController = Get.put(VideoController());
+  BannerAd? _bannerAd;
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
   late YoutubePlayerController controller;
@@ -30,7 +31,8 @@ class _VideoScreenState extends State<VideoScreen> {
   @override
   void initState() {
     super.initState();
-    videoId = YoutubePlayer.convertUrlToId(videoController.youtubeUrl)!;
+    _loadBannerAd();
+    videoId = YoutubePlayer.convertUrlToId(videoController.youtubeUrl) ?? "";
     controller = YoutubePlayerController(
       initialVideoId: videoId,
       flags: const YoutubePlayerFlags(
@@ -45,6 +47,22 @@ class _VideoScreenState extends State<VideoScreen> {
     )..addListener(listener);
     idController = TextEditingController();
     seekToController = TextEditingController();
+  }
+
+  void _loadBannerAd() {
+    _bannerAd = BannerAd(
+      adUnitId: AdService.bannerAdUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (_) {
+          setState(() {});
+        },
+        onAdFailedToLoad: (ad, err) {
+          ad.dispose();
+        },
+      ),
+    )..load();
   }
 
   void listener() {
@@ -64,6 +82,7 @@ class _VideoScreenState extends State<VideoScreen> {
     controller.dispose();
     idController.dispose();
     seekToController.dispose();
+    _bannerAd?.dispose();
     super.dispose();
   }
 
@@ -93,8 +112,7 @@ class _VideoScreenState extends State<VideoScreen> {
                   SystemUiOverlayStyle.light.copyWith(
                     statusBarColor: Colors.transparent,
                     statusBarBrightness: Brightness.dark,
-                    statusBarIconBrightness: Brightness
-                        .dark, // Set your desired status bar color here
+                    statusBarIconBrightness: Brightness.dark,
                   ),
                 );
               },
@@ -109,13 +127,11 @@ class _VideoScreenState extends State<VideoScreen> {
                   SystemUiOverlayStyle.light.copyWith(
                     statusBarColor: Colors.transparent,
                     statusBarBrightness: Brightness.light,
-                    statusBarIconBrightness: Brightness
-                        .dark, // Set your desired status bar color here
+                    statusBarIconBrightness: Brightness.dark,
                   ),
                 );
               },
             );
-            // SystemChrome.setPreferredOrientations(DeviceOrientation.values);
           },
           player: YoutubePlayer(
             controller: controller,
@@ -126,7 +142,7 @@ class _VideoScreenState extends State<VideoScreen> {
               const SizedBox(width: 8.0),
               Expanded(
                 child: Text(
-                  controller.metadata.title,
+                  videoController.lessonTitle ?? controller.metadata.title,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 18.0,
@@ -142,16 +158,6 @@ class _VideoScreenState extends State<VideoScreen> {
             onEnded: (data) {},
           ),
           builder: (context, player) =>
-
-              //     Scaffold(
-              //   key: scaffoldKey,
-              //   body: Column(
-              //     children: [
-              //       player,
-              //     ],
-              //   ),
-              // ),
-
               OrientationBuilder(
                   builder: (BuildContext context, Orientation orientation) {
             if (orientation == Orientation.landscape ||
@@ -160,13 +166,6 @@ class _VideoScreenState extends State<VideoScreen> {
               return Scaffold(
                 backgroundColor: appTheme.bgColor,
                 body: player,
-                // appBar: getInVisibleAppBar(
-                //   color: Colors.transparent,
-                //   statusBarBrightness: Brightness.dark,
-                //   statusBarIconBrightness: Brightness.dark,
-                // ),
-                // body: Center(child: player),
-                // // body: youtubeHierarchy(),
               );
             } else {
               return Scaffold(
@@ -189,45 +188,22 @@ class _VideoScreenState extends State<VideoScreen> {
                     statusBarBrightness: Brightness.dark,
                   ),
                 ),
-                // body: youtubeHierarchy(),
-                body: Center(child: player),
+                body: Column(
+                  children: [
+                    Center(child: player),
+                    if (_bannerAd != null)
+                      Container(
+                        margin: EdgeInsets.only(top: 20.v),
+                        alignment: Alignment.center,
+                        width: _bannerAd!.size.width.toDouble(),
+                        height: _bannerAd!.size.height.toDouble(),
+                        child: AdWidget(ad: _bannerAd!),
+                      ),
+                  ],
+                ),
               );
             }
           }),
-        ),
-      ),
-    );
-  }
-
-  youtubeHierarchy() {
-    return Container(
-      child: Align(
-        alignment: Alignment.center,
-        child: FittedBox(
-          fit: BoxFit.cover,
-          child: YoutubePlayer(
-            controller: controller,
-            showVideoProgressIndicator: true,
-            progressIndicatorColor: theme.colorScheme.primary,
-            topActions: <Widget>[
-              const SizedBox(width: 8.0),
-              Expanded(
-                child: Text(
-                  controller.metadata.title,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 18.0,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                ),
-              ),
-            ],
-            onReady: () {
-              controller.addListener(listener);
-            },
-            onEnded: (data) {},
-          ),
         ),
       ),
     );

@@ -1,5 +1,5 @@
 import '../controller/customer_reviews_controller.dart';
-import '../models/userprofile_item_model.dart';
+import '../../../data/models/course_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elearning_app/core/app_export.dart';
 import 'package:flutter_elearning_app/widgets/custom_rating_bar.dart';
@@ -13,9 +13,9 @@ class UserprofileItemWidget extends StatelessWidget {
           key: key,
         );
 
-  UserprofileItemModel userprofileItemModelObj;
+  ReviewModel userprofileItemModelObj;
 
-    var controller = Get.find<CustomerReviewsController>();
+  var controller = Get.find<CustomerReviewsController>();
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class UserprofileItemWidget extends StatelessWidget {
           Row(
             children: [
               CustomImageView(
-                imagePath: userprofileItemModelObj.image!,
+                imagePath: userprofileItemModelObj.userImage,
                 height: 56.adaptSize,
                 width: 56.adaptSize,
                 radius: BorderRadius.circular(
@@ -53,14 +53,14 @@ class UserprofileItemWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      userprofileItemModelObj.name!,
+                      userprofileItemModelObj.userName ?? "",
                       style: theme.textTheme.titleMedium,
                     ),
                     SizedBox(height: 8.v),
                     CustomRatingBar(
                       color: appTheme.amber500,
                       ignoreGestures: true,
-                      initialRating: 5,
+                      initialRating: userprofileItemModelObj.rating ?? 5.0,
                     ),
                   ],
                 ),
@@ -72,7 +72,7 @@ class UserprofileItemWidget extends StatelessWidget {
             width: 325.h,
             margin: EdgeInsets.only(right: 25.h),
             child: Text(
-              userprofileItemModelObj.review!,
+              userprofileItemModelObj.comment ?? "",
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: theme.textTheme.bodyLarge!.copyWith(
