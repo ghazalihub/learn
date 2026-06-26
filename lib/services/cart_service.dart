@@ -7,6 +7,11 @@ class CartService extends GetxService {
   final AuthService _auth = Get.find<AuthService>();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  Future<bool> validatePromoCode(String code) async {
+    final doc = await _firestore.collection('promo_codes').doc(code).get();
+    return doc.exists && (doc.data()!['isActive'] ?? false);
+  }
+
   Future<void> enroll(CourseModel course) async {
     if (!_auth.isLoggedIn) {
       Get.toNamed(AppRoutes.logInScreen);

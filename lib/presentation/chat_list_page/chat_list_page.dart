@@ -59,7 +59,7 @@ class _ChatListPageState extends State<ChatListPage> {
   /// Navigates to the favoriteScreen when the action is triggered.
   onTapTwentyEight1() {
     Get.toNamed(
-      AppRoutes.favoriteScreen,
+      AppRoutes.favorite1Page,
     );
   }
 

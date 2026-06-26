@@ -36,7 +36,7 @@ class _PopularCoursesScreenState extends State<PopularCoursesScreen> {
                   itemCount: controller.courses.length,
                   itemBuilder: (context, index) {
                     var model = controller.courses[index];
-                    return animationfunction(index, LearnnewskillslistItemWidget(
+                    return animationfunction(index, LearnnewskillslistItemWidget(course: model,
                       LearnnewskillslistItemModel(model.thumbnailUrl, model.title, model.instructorImage, model.instructorName, model.category, "${model.currency} ${model.price}")
                     ));
                   }

@@ -35,6 +35,30 @@ class SignUpController extends GetxController {
     }
   }
 
+  Future<void> signInWithGoogle() async {
+    isLoading.value = true;
+    try {
+      await _authService.signInWithGoogle();
+      Get.offAllNamed(AppRoutes.homeScreenContainerScreen);
+    } catch (e) {
+      Get.snackbar("Error", e.toString());
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> signInWithFacebook() async {
+    isLoading.value = true;
+    try {
+      await _authService.signInWithFacebook();
+      Get.offAllNamed(AppRoutes.homeScreenContainerScreen);
+    } catch (e) {
+      Get.snackbar("Error", e.toString());
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   @override
   void onClose() {
     super.onClose();

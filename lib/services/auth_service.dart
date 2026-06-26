@@ -1,5 +1,9 @@
+import 'dart:io';
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_elearning_app/core/app_export.dart';
@@ -7,7 +11,9 @@ import '../data/models/user_model.dart';
 
 class AuthService extends GetxService {
   final auth.FirebaseAuth _firebaseAuth = auth.FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
 
   Rxn<UserModel> currentUser = Rxn<UserModel>();
   bool get isLoggedIn => currentUser.value != null;
@@ -48,7 +54,7 @@ class AuthService extends GetxService {
         // Handle new user creation if doc doesn't exist
       }
     } catch (e) {
-      print("Sync error: $e");
+      //  // print("Sync error: $e");
     }
   }
 
@@ -86,10 +92,44 @@ class AuthService extends GetxService {
 
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
+    await _googleSignIn.signOut();
+    await FacebookAuth.instance.logOut();
     Get.offAllNamed(AppRoutes.logInScreen);
   }
 
   Future<void> resetPassword(String email) async {
     await _firebaseAuth.sendPasswordResetEmail(email: email);
+  }
+
+  Future<void> signInWithGoogle() async {
+    final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+    if (googleUser != null) {
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final auth.AuthCredential credential = auth.GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+      await _firebaseAuth.signInWithCredential(credential);
+    }
+  }
+
+  Future<void> signInWithFacebook() async {
+    final LoginResult result = await FacebookAuth.instance.login();
+    if (result.status == LoginStatus.success) {
+      final auth.AuthCredential credential = auth.FacebookAuthProvider.credential(result.accessToken!.token);
+      await _firebaseAuth.signInWithCredential(credential);
+    }
+  }
+
+  Future<void> uploadProfileImage(File file) async {
+    if (!isLoggedIn) return;
+    final uid = currentUser.value!.userId;
+    final ref = _storage.ref().child('users/$uid/profile.jpg');
+    await ref.putFile(file);
+    final url = await ref.getDownloadURL();
+    await _firestore.collection('users').doc(uid).update({'profileImageUrl': url});
+    currentUser.value!.profileImageUrl = url;
+    currentUser.refresh();
+    _saveToLocalCache(currentUser.value!);
   }
 }

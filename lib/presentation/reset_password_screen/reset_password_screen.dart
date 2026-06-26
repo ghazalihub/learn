@@ -1,3 +1,4 @@
+import 'package:flutter_elearning_app/services/auth_service.dart';
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
@@ -159,9 +160,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
  /// Navigates to the resetPasswordSuccessScreen when the action is triggered.
  onTapResetPassword() {
-  Get.toNamed(
-   AppRoutes.resetPasswordSuccessScreen,
-  );
+  // In a real app, you would use a code from verification screen
+  Get.find<AuthService>().resetPassword(Get.arguments ?? "user@example.com").then((_) {
+    Get.toNamed(
+     AppRoutes.resetPasswordSuccessScreen,
+    );
+  });
  }
 }
 

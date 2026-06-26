@@ -204,7 +204,7 @@ class _LogInScreenState extends State<LogInScreen> {
           ),
           buttonTextStyle: CustomTextStyles.titleMedium16,
           onPressed: () {
-
+            controller.signInWithGoogle();
           }));
  }
 
@@ -230,18 +230,37 @@ class _LogInScreenState extends State<LogInScreen> {
           ),
           buttonTextStyle: CustomTextStyles.titleMedium16,
           onPressed: () {
-
+            controller.signInWithFacebook();
           }));
  }
 
  /// Section Widget
+  Widget _buildInstagramButton() {
+    return Expanded(
+        child: CustomElevatedButton(
+            height: 54.v,
+            text: "Instagram",
+            margin: EdgeInsets.only(left: 8.h),
+            buttonStyle: CustomButtonStyles.fillGray.copyWith(
+              backgroundColor: MaterialStatePropertyAll(appTheme.containerbgColor),
+            ),
+            buttonTextStyle: CustomTextStyles.titleMedium16,
+            onPressed: () {
+              controller.signInWithInstagram();
+            }));
+  }
+
  Widget _buildSocial() {
-  return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 8.h),
-      child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [_buildGoogleButton(), _buildFacebookButton()]));
- }
+    return Padding(
+        padding: EdgeInsets.symmetric(horizontal: 8.h),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildGoogleButton(),
+              _buildFacebookButton(),
+              _buildInstagramButton(),
+            ]));
+  }
 
  /// Navigates to the forgotPasswordScreen when the action is triggered.
  onTapTxtForgotPassword() {

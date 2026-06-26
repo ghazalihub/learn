@@ -31,14 +31,19 @@ class PaymentService extends GetxService {
   }
 
   Future<void> buyCourse(CourseModel course) async {
-    // This is a placeholder. Real implementation needs product IDs mapped to courses.
-    // final PurchaseParam purchaseParam = PurchaseParam(productDetails: productDetails);
-    // _inAppPurchase.buyNonConsumable(purchaseParam: purchaseParam);
+    if (!isAvailable.value) {
+      Get.snackbar("Error", "Store not available");
+      return;
+    }
 
-    // For now, let's simulate a successful purchase
-    Get.snackbar("Processing", "Connecting to Store...");
-    await Future.delayed(Duration(seconds: 2));
-    Get.find<CartService>().enroll(course);
+    final product = products.firstWhereOrNull((p) => p.id == course.id);
+    if (product != null) {
+      final PurchaseParam purchaseParam = PurchaseParam(productDetails: product);
+      await _inAppPurchase.buyNonConsumable(purchaseParam: purchaseParam);
+    } else {
+      // For demo purposes, we still allow enrollment if product ID not found in store
+      await Get.find<CartService>().enroll(course);
+    }
   }
 
   void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {

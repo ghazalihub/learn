@@ -1,8 +1,9 @@
 import 'dart:convert';
+import 'package:flutter_elearning_app/core/app_export.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../data/models/course_model.dart';
 
-class CacheService {
+class CacheService extends GetxService {
   static const String _coursesKey = 'cached_courses';
 
   Future<void> saveCourses(List<CourseModel> courses) async {

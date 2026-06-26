@@ -54,7 +54,7 @@ class _CallListPageState extends State<CallListPage> {
   /// Navigates to the favoriteScreen when the action is triggered.
   onTapTwentyEight1() {
     Get.toNamed(
-      AppRoutes.favoriteScreen,
+      AppRoutes.favorite1Page,
     );
   }
 

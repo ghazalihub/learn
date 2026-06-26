@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter_elearning_app/core/app_export.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_elearning_app/services/auth_service.dart';
 import '../apiClient/api_client.dart';
@@ -96,33 +97,17 @@ class CourseRepository {
   }
 
   Future<void> unlockLesson(String courseId, String lessonId) async {
-    final authService = Get.find<AuthService>();
-    if (authService.isLoggedIn) {
-      final userId = authService.currentUser.value!.userId;
-      await _firestore.collection('users').doc(userId).collection('unlocked_lessons').doc(courseId).set({
-        'lessons': FieldValue.arrayUnion([lessonId]),
-      }, SetOptions(merge: true));
-    }
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> unlocked = prefs.getStringList('unlocked_$courseId') ?? [];
+    final box = await Hive.openBox('unlocked_lessons');
+    List<String> unlocked = List<String>.from(box.get(courseId, defaultValue: []));
     if (!unlocked.contains(lessonId)) {
       unlocked.add(lessonId);
-      await prefs.setStringList('unlocked_$courseId', unlocked);
+      await box.put(courseId, unlocked);
     }
   }
 
   Future<bool> isLessonUnlocked(String courseId, String lessonId) async {
-    final authService = Get.find<AuthService>();
-    if (authService.isLoggedIn) {
-      final userId = authService.currentUser.value!.userId;
-      final doc = await _firestore.collection('users').doc(userId).collection('unlocked_lessons').doc(courseId).get();
-      if (doc.exists) {
-        final unlocked = List<String>.from(doc.data()!['lessons'] ?? []);
-        if (unlocked.contains(lessonId)) return true;
-      }
-    }
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> unlocked = prefs.getStringList('unlocked_$courseId') ?? [];
+    final box = await Hive.openBox('unlocked_lessons');
+    List<String> unlocked = List<String>.from(box.get(courseId, defaultValue: []));
     return unlocked.contains(lessonId);
   }
 }

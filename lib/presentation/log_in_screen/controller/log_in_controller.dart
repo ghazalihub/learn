@@ -31,6 +31,35 @@ class LogInController extends GetxController {
     }
   }
 
+  Future<void> signInWithInstagram() async {
+    // Instagram doesn't have a direct Firebase provider, usually handled via webview or custom backend
+    Get.snackbar("Info", "Instagram sign-in integration coming soon!");
+  }
+
+  Future<void> signInWithGoogle() async {
+    isLoading.value = true;
+    try {
+      await _authService.signInWithGoogle();
+      Get.offAllNamed(AppRoutes.homeScreenContainerScreen);
+    } catch (e) {
+      Get.snackbar("Error", e.toString());
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> signInWithFacebook() async {
+    isLoading.value = true;
+    try {
+      await _authService.signInWithFacebook();
+      Get.offAllNamed(AppRoutes.homeScreenContainerScreen);
+    } catch (e) {
+      Get.snackbar("Error", e.toString());
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   @override
   void onClose() {
     super.onClose();

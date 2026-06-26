@@ -11,7 +11,7 @@ class SplashController extends GetxController {
  @override
  void onReady() {
   Future.delayed(const Duration(milliseconds: 3000), () {
-   print("themedata is ======== ${PrefUtils().getThemeData()}");
+   //  // print("themedata is ======== ${PrefUtils().getThemeData()}");
    _getIsFirst();
   });
  }
@@ -19,7 +19,7 @@ class SplashController extends GetxController {
  _getIsFirst() async {
   bool isIntro = await PrefUtils.getIsIntro();
   Timer(const Duration(seconds: 3), () {
-   print("is intro ====== $isIntro");
+   //  // print("is intro ====== $isIntro");
    if (isIntro) {
     Get.offAllNamed(AppRoutes.onboarding1Screen);
    } else if (_authService.isLoggedIn) {

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_elearning_app/core/app_export.dart';
 import 'package:flutter_elearning_app/data/repositories/course_repository.dart';
 import 'package:flutter_elearning_app/services/ad_service.dart';
+import 'package:flutter_elearning_app/services/auth_service.dart';
 
 // ignore: must_be_immutable
 class WidgetItemWidget extends StatefulWidget {
@@ -41,22 +42,29 @@ class _WidgetItemWidgetState extends State<WidgetItemWidget> {
     return GestureDetector(
       onTap: () async {
         final repo = Get.find<CourseRepository>();
+        final auth = Get.find<AuthService>();
         final lesson = widget.widgetItemModelObj;
+        final courseId = controller.course.id ?? "course_001";
 
-        bool isUnlocked = lesson.isComplete! || (lesson.videoUrl != null && lesson.videoUrl!.isEmpty);
-        // For simplicity, let's assume we need to check with repo
-        isUnlocked = await repo.isLessonUnlocked("default_course", lesson.title!);
+        bool isEnrolled = auth.currentUser.value?.enrolledCourses?.contains(courseId) ?? false;
+
+        if (isEnrolled) {
+          _playVideo();
+          return;
+        }
+
+        bool isUnlocked = await repo.isLessonUnlocked(courseId, lesson.title!);
 
         if (!isUnlocked) {
           Get.defaultDialog(
-            title: "Unlock Lesson",
-            middleText: "Watch an ad to unlock this lesson.",
+            title: "Unlock Free Lesson",
+            middleText: "Watch a short ad to watch this lecture for free!",
             actions: [
               TextButton(onPressed: () => Get.back(), child: Text("Cancel")),
               TextButton(onPressed: () {
                 Get.back();
                 Get.find<AdService>().showRewardedAd(onUserEarnedReward: (ad, reward) {
-                  repo.unlockLesson("default_course", lesson.title!).then((_) {
+                  repo.unlockLesson(courseId, lesson.title!).then((_) {
                     setState(() {});
                     _playVideo();
                   });

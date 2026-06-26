@@ -45,7 +45,7 @@ class HomeScreenController extends GetxController {
         }
       }
     } catch (e) {
-      print("Error loading home data: $e");
+      //  // print("Error loading home data: $e");
     } finally {
       isLoading.value = false;
     }

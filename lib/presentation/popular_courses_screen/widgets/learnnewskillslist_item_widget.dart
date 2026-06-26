@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_elearning_app/core/app_export.dart';
 import '../models/learnnewskillslist_item_model.dart';
+import '../../../data/models/course_model.dart';
+
 class LearnnewskillslistItemWidget extends StatelessWidget {
-  LearnnewskillslistItemWidget(this.model);
+  LearnnewskillslistItemWidget(this.model, {this.course});
   final LearnnewskillslistItemModel model;
+  final CourseModel? course;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Since we only have some data in the item model,
-        // we might need to fetch the full course model or pass it if available.
-        // For now, this is a placeholder navigation.
+        if (course != null) {
+          Get.toNamed(AppRoutes.courseDetailsAboutScreen, arguments: course);
+        }
       },
       child: Container(
         padding: EdgeInsets.all(16.h),

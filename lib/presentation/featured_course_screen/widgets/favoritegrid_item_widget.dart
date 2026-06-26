@@ -1,9 +1,9 @@
-import '../../favorite1_page/controller/favorite1_controller.dart';
 import '../controller/featured_course_controller.dart';
 import '../models/favoritegrid_item_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elearning_app/core/app_export.dart';
 import 'package:flutter_elearning_app/widgets/custom_icon_button.dart';
+import 'package:flutter_elearning_app/services/favorite_service.dart';
 
 // ignore: must_be_immutable
 class FavoritegridItemWidget extends StatefulWidget {
@@ -24,7 +24,6 @@ class FavoritegridItemWidget extends StatefulWidget {
 }
 
 class _FavoritegridItemWidgetState extends State<FavoritegridItemWidget> {
-  Favorite1Controller favorite1Controller = Get.put(Favorite1Controller());
   var controller = Get.find<FeaturedCourseController>();
 
   @override
@@ -33,12 +32,11 @@ class _FavoritegridItemWidgetState extends State<FavoritegridItemWidget> {
       init: FeaturedCourseController(),
       builder:(controller) =>  GestureDetector(
         onTap: () {
-          widget.onTapFund!.call();
+          widget.onTapFund?.call();
         },
         child: Container(
           padding: EdgeInsets.all(8.h),
           decoration: AppDecoration.fillGray.copyWith(
-
             borderRadius: BorderRadiusStyle.roundedBorder12,
           ),
           child: Column(
@@ -69,14 +67,7 @@ class _FavoritegridItemWidgetState extends State<FavoritegridItemWidget> {
                         onTap: () {
                           widget.favoritegridItemModelObj.isLike =
                               !widget.favoritegridItemModelObj.isLike!;
-                          if(widget.favoritegridItemModelObj.isLike!){
-                            favorite1Controller.favouriteList.add(widget.favoritegridItemModelObj);
-                            favorite1Controller.update();
-                          }
-                          else{
-                            favorite1Controller.favouriteList.remove(widget.favoritegridItemModelObj);
-                            favorite1Controller.update();
-                          }
+                          Get.find<FavoriteService>().toggleFavorite(widget.favoritegridItemModelObj.title!);
                           controller.update();
                         },
                         height: 28.adaptSize,
@@ -163,7 +154,6 @@ class _FavoritegridItemWidgetState extends State<FavoritegridItemWidget> {
                   ),
                 ],
               ),
-
             ],
           ),
         ),

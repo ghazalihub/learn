@@ -234,7 +234,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
           buttonTextStyle: CustomTextStyles.titleMedium16,
           onPressed: () {
-
+            controller.signInWithGoogle();
           }));
  }
 
@@ -260,7 +260,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
           buttonTextStyle: CustomTextStyles.titleMedium16,
           onPressed: () {
-
+            controller.signInWithFacebook();
           }));
  }
 
