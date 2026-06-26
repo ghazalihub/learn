@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_elearning_app/core/app_export.dart';
 import '../data/models/user_model.dart';
 
@@ -19,21 +21,47 @@ class AuthService extends GetxService {
   Future<void> _onAuthStateChanged(auth.User? firebaseUser) async {
     if (firebaseUser == null) {
       currentUser.value = null;
+      _clearLocalCache();
     } else {
-      final doc = await _firestore.collection('users').doc(firebaseUser.uid).get();
-      if (doc.exists) {
-        currentUser.value = UserModel.fromJson(doc.data()!);
+      final prefs = await SharedPreferences.getInstance();
+      final cachedUser = prefs.getString('cached_user_data');
+      final lastUpdate = prefs.getInt('last_user_sync') ?? 0;
+      final now = DateTime.now().millisecondsSinceEpoch;
+
+      if (cachedUser != null && (now - lastUpdate < 48 * 60 * 60 * 1000)) {
+        currentUser.value = UserModel.fromJson(json.decode(cachedUser));
+        _syncUserFromFirestore(firebaseUser.uid); // Background sync
       } else {
-        currentUser.value = UserModel(
-          userId: firebaseUser.uid,
-          email: firebaseUser.email,
-          name: firebaseUser.displayName ?? "Student",
-          enrolledCourses: [],
-          joinedAt: DateTime.now(),
-        );
-        await _firestore.collection('users').doc(firebaseUser.uid).set(currentUser.value!.toJson());
+        await _syncUserFromFirestore(firebaseUser.uid);
       }
     }
+  }
+
+  Future<void> _syncUserFromFirestore(String uid) async {
+    try {
+      final doc = await _firestore.collection('users').doc(uid).get();
+      if (doc.exists) {
+        final user = UserModel.fromJson(doc.data()!);
+        currentUser.value = user;
+        _saveToLocalCache(user);
+      } else {
+        // Handle new user creation if doc doesn't exist
+      }
+    } catch (e) {
+      print("Sync error: $e");
+    }
+  }
+
+  Future<void> _saveToLocalCache(UserModel user) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('cached_user_data', json.encode(user.toJson()));
+    await prefs.setInt('last_user_sync', DateTime.now().millisecondsSinceEpoch);
+  }
+
+  Future<void> _clearLocalCache() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('cached_user_data');
+    await prefs.remove('last_user_sync');
   }
 
   Future<void> signIn(String email, String password) async {
