@@ -79,11 +79,9 @@ class _LogOutScreenState extends State<LogOutScreen> {
 
   /// Navigates to the logInScreen when the action is triggered.
   onTapLogOut() {
-    PrefUtils.setIsSignIn(true);
+    PrefUtils.setIsSignIn(false);
     customBottomBarController.getIndex(0);
-    Get.offAllNamed(
-      AppRoutes.logInScreen,
-    );
+    Get.find<AuthService>().signOut();
   }
 }
 

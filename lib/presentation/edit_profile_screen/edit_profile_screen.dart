@@ -158,8 +158,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
  /// Section Widget
  Widget _buildSave() {
   return CustomElevatedButton(
-    onPressed: (){
-      Get.back();
+    onPressed: () async {
+      if (_formKey.currentState!.validate()) {
+        final auth = Get.find<AuthService>();
+        await auth.updateProfile(controller.fullNameController.text, controller.emailController.text);
+        Get.back();
+        Get.snackbar("Success", "Profile updated successfully!");
+      }
     },
       text: "lbl_save".tr,
       margin: EdgeInsets.only(left: 16.h, right: 16.h, bottom: 40.v));

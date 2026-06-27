@@ -68,11 +68,11 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                       //             imagePath:
                       //             ImageConstant.imgCameraOnprimary))),
                       SizedBox(height: 40.v),
-                       _buildFrame("lbl_name".tr,"lbl_ronald_richards".tr),
+                      Obx(() => _buildFrame("lbl_name".tr, Get.find<AuthService>().currentUser.value?.name ?? "")),
                       SizedBox(height: 16.v),
-                       _buildFrame("lbl_email_address".tr,"msg_ronaldrichards_gmail_com".tr),
+                      Obx(() => _buildFrame("lbl_email_address".tr, Get.find<AuthService>().currentUser.value?.email ?? "")),
                       SizedBox(height: 16.v),
-                      _buildFrame("lbl_phone_number".tr,"lbl_405_555_0128".tr),
+                      Obx(() => _buildFrame("lbl_phone_number".tr, Get.find<AuthService>().currentUser.value?.phone ?? "")),
                       SizedBox(height: 5.v)
                      ]))
                 ]))),

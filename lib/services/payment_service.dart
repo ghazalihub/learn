@@ -28,9 +28,13 @@ class PaymentService extends GetxService {
   Future<void> initStoreInfo() async {
     isAvailable.value = await _inAppPurchase.isAvailable();
     if (isAvailable.value) {
-      const Set<String> _kIds = <String>{'course_001', 'course_002'};
-      final ProductDetailsResponse response = await _inAppPurchase.queryProductDetails(_kIds);
-      products.assignAll(response.productDetails);
+      final repo = Get.find<CourseRepository>();
+      final allCourses = await repo.getCourses();
+      final Set<String> _kIds = allCourses.map((c) => c.id!).toSet();
+      if (_kIds.isNotEmpty) {
+        final ProductDetailsResponse response = await _inAppPurchase.queryProductDetails(_kIds);
+        products.assignAll(response.productDetails);
+      }
     }
   }
 

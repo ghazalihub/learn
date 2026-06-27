@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'dart:io';
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
@@ -26,9 +27,12 @@ class AuthService extends GetxService {
 
   Future<void> _onAuthStateChanged(auth.User? firebaseUser) async {
     if (firebaseUser != null) {
-       _firebaseAuth.currentUser!.getIdToken().then((token) {
-          _firestore.collection('users').doc(firebaseUser.uid).update({'fcmToken': token});
+       FirebaseMessaging.instance.getToken().then((token) {
+          if (token != null) {
+            _firestore.collection('users').doc(firebaseUser.uid).update({'fcmToken': token});
+          }
        });
+       _syncUserFromFirestore(firebaseUser.uid);
     }
     if (firebaseUser == null) {
       currentUser.value = null;
@@ -134,6 +138,19 @@ class AuthService extends GetxService {
     final url = await ref.getDownloadURL();
     await _firestore.collection('users').doc(uid).update({'profileImageUrl': url});
     currentUser.value!.profileImageUrl = url;
+    currentUser.refresh();
+    _saveToLocalCache(currentUser.value!);
+  }
+
+  Future<void> updateProfile(String name, String email) async {
+    if (!isLoggedIn) return;
+    final uid = currentUser.value!.userId;
+    await _firestore.collection('users').doc(uid).update({
+      'name': name,
+      'email': email,
+    });
+    currentUser.value!.name = name;
+    currentUser.value!.email = email;
     currentUser.refresh();
     _saveToLocalCache(currentUser.value!);
   }
