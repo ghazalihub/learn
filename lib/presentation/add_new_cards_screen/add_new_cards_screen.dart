@@ -157,8 +157,14 @@ class _AddNewCardsScreenState extends State<AddNewCardsScreen> {
       text: "lbl_add_new_card".tr,
       onPressed: () {
         if (_formKey.currentState!.validate()) {
+          // Save to local list for now, since no Stripe backend
+          final cardData = {
+            'number': controller.cardNumberEditTextController.text,
+            'expiry': controller.expiryDateEditTextController.text,
+            'cvv': controller.cvvEditTextController.text,
+          };
           Get.snackbar("Success", "Card added successfully!");
-          Get.back();
+          Get.back(result: cardData);
         }
       });
  }

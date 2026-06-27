@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_elearning_app/core/app_export.dart';
 import 'package:flutter_elearning_app/widgets/custom_elevated_button.dart';
 import 'package:flutter_elearning_app/widgets/custom_outlined_button.dart';
+import 'package:flutter_elearning_app/services/auth_service.dart';
 
 import '../../widgets/app_bar/custum_bottom_bar_controller.dart';
 import 'controller/log_out_controller.dart';
-
-
-
 
 class LogOutScreen extends StatefulWidget {
   const LogOutScreen({super.key});
@@ -70,13 +68,6 @@ class _LogOutScreenState extends State<LogOutScreen> {
             ]));
   }
 
-  /// Navigates to the profileOneScreen when the action is triggered.
-  onTapCancel() {
-    Get.toNamed(
-      AppRoutes.profileOneScreen,
-    );
-  }
-
   /// Navigates to the logInScreen when the action is triggered.
   onTapLogOut() {
     PrefUtils.setIsSignIn(false);
@@ -84,5 +75,3 @@ class _LogOutScreenState extends State<LogOutScreen> {
     Get.find<AuthService>().signOut();
   }
 }
-
-

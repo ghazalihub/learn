@@ -173,7 +173,7 @@ class _HomeScreenPageState extends State<HomeScreenPage> {
         child: Row(children: controller.instructors.map((inst) => Padding(
             padding: EdgeInsets.symmetric(horizontal: 8.h),
             child: GestureDetector(
-              onTap: () => Get.toNamed(AppRoutes.instructorDetailsScreen),
+              onTap: () => Get.toNamed(AppRoutes.instructorDetailsScreen, arguments: inst),
               child: Container(
                   height: 65.v, width: 173.h,
                   decoration: AppDecoration.fillGray.copyWith(borderRadius: BorderRadiusStyle.roundedBorder12),

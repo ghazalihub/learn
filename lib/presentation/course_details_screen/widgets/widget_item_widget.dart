@@ -29,8 +29,9 @@ class _WidgetItemWidgetState extends State<WidgetItemWidget> {
   var controller = Get.find<CourseDetailsController>();
 
   void _playVideo() {
-    vidioController.youtubeUrl = widget.widgetItemModelObj.videoUrl ?? "https://www.youtube.com/watch?v=0Sg6QHmlFJE";
-    Get.toNamed(AppRoutes.videoScreen)!.then((value) {
+    final url = widget.widgetItemModelObj.videoUrl ?? "https://www.youtube.com/watch?v=0Sg6QHmlFJE";
+    vidioController.youtubeUrl = url;
+    Get.toNamed(AppRoutes.videoScreen, arguments: {'url': url})!.then((value) {
       Future.delayed(Duration(milliseconds: 100), () {
         SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);
       });
@@ -126,7 +127,7 @@ class _WidgetItemWidgetState extends State<WidgetItemWidget> {
             ),
             Spacer(),
             FutureBuilder<bool>(
-              future: Get.find<CourseRepository>().isLessonUnlocked("default_course", widget.widgetItemModelObj.title!),
+              future: Get.find<CourseRepository>().isLessonUnlocked(controller.course.id ?? "course_001", widget.widgetItemModelObj.title!),
               builder: (context, snapshot) {
                 bool unlocked = snapshot.data ?? false;
                 return CustomImageView(

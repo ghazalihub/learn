@@ -40,15 +40,10 @@ class AuthService extends GetxService {
     } else {
       final prefs = await SharedPreferences.getInstance();
       final cachedUser = prefs.getString('cached_user_data');
-      final lastUpdate = prefs.getInt('last_user_sync') ?? 0;
-      final now = DateTime.now().millisecondsSinceEpoch;
-
-      if (cachedUser != null && (now - lastUpdate < 48 * 60 * 60 * 1000)) {
+      if (cachedUser != null) {
         currentUser.value = UserModel.fromJson(json.decode(cachedUser));
-        _syncUserFromFirestore(firebaseUser.uid); // Background sync
-      } else {
-        await _syncUserFromFirestore(firebaseUser.uid);
       }
+      _syncUserFromFirestore(firebaseUser.uid);
     }
   }
 
@@ -59,24 +54,18 @@ class AuthService extends GetxService {
         final user = UserModel.fromJson(doc.data()!);
         currentUser.value = user;
         _saveToLocalCache(user);
-      } else {
-        // Handle new user creation if doc doesn't exist
       }
-    } catch (e) {
-      //  // print("Sync error: $e");
-    }
+    } catch (e) {}
   }
 
   Future<void> _saveToLocalCache(UserModel user) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('cached_user_data', json.encode(user.toJson()));
-    await prefs.setInt('last_user_sync', DateTime.now().millisecondsSinceEpoch);
   }
 
   Future<void> _clearLocalCache() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('cached_user_data');
-    await prefs.remove('last_user_sync');
   }
 
   Future<void> signIn(String email, String password) async {
@@ -87,13 +76,7 @@ class AuthService extends GetxService {
     final credential = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
     if (credential.user != null) {
       await credential.user!.updateDisplayName(name);
-      final user = UserModel(
-        userId: credential.user!.uid,
-        name: name,
-        email: email,
-        enrolledCourses: [],
-        joinedAt: DateTime.now(),
-      );
+      final user = UserModel(userId: credential.user!.uid, name: name, email: email, enrolledCourses: [], joinedAt: DateTime.now());
       await _firestore.collection('users').doc(credential.user!.uid).set(user.toJson());
       currentUser.value = user;
     }
@@ -114,10 +97,7 @@ class AuthService extends GetxService {
     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
     if (googleUser != null) {
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-      final auth.AuthCredential credential = auth.GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
+      final auth.AuthCredential credential = auth.GoogleAuthProvider.credential(accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
       await _firebaseAuth.signInWithCredential(credential);
     }
   }
@@ -145,10 +125,7 @@ class AuthService extends GetxService {
   Future<void> updateProfile(String name, String email) async {
     if (!isLoggedIn) return;
     final uid = currentUser.value!.userId;
-    await _firestore.collection('users').doc(uid).update({
-      'name': name,
-      'email': email,
-    });
+    await _firestore.collection('users').doc(uid).update({'name': name, 'email': email});
     currentUser.value!.name = name;
     currentUser.value!.email = email;
     currentUser.refresh();
