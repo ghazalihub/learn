@@ -88,6 +88,7 @@ backgroundColor: appTheme.bgColor,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CustomIconButton(
+            onTap: () => _webrtc.localRenderer.srcObject?.getAudioTracks().forEach((t) => t.enabled = !t.enabled),
             height: 58.adaptSize,
             width: 58.adaptSize,
             padding: EdgeInsets.all(16.h),

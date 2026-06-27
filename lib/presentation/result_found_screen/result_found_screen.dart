@@ -34,7 +34,10 @@ class ResultFoundScreen extends GetWidget<ResultFoundController> {
                       suffix: Container(
                           margin: EdgeInsets.fromLTRB(30.h, 16.v, 20.h, 16.v),
                           child: CustomImageView(
-                              onTap: () => controller.searchController.clear(),
+                              onTap: () {
+                                controller.searchController.clear();
+                                controller.search("");
+                              },
                               imagePath: ImageConstant.imgPlusOnprimarycontainer,
                               height: 24.adaptSize,
                               width: 24.adaptSize)),

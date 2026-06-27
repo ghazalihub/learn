@@ -156,7 +156,10 @@ class _AddNewCardsScreenState extends State<AddNewCardsScreen> {
   return CustomElevatedButton(
       text: "lbl_add_new_card".tr,
       onPressed: () {
-      Get.back();
+        if (_formKey.currentState!.validate()) {
+          Get.snackbar("Success", "Card added successfully!");
+          Get.back();
+        }
       });
  }
 

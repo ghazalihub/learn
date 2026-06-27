@@ -25,6 +25,11 @@ class AuthService extends GetxService {
   }
 
   Future<void> _onAuthStateChanged(auth.User? firebaseUser) async {
+    if (firebaseUser != null) {
+       _firebaseAuth.currentUser!.getIdToken().then((token) {
+          _firestore.collection('users').doc(firebaseUser.uid).update({'fcmToken': token});
+       });
+    }
     if (firebaseUser == null) {
       currentUser.value = null;
       _clearLocalCache();

@@ -17,7 +17,10 @@ class ResultFoundController extends GetxController {
   RxBool isLoading = false.obs;
 
   void search(String query) async {
-    if (query.isEmpty) return;
+    if (query.isEmpty) {
+      searchResults.clear();
+      return;
+    }
     isLoading.value = true;
     final allCourses = await _repo.getCourses();
     searchResults.value = allCourses.where((c) =>

@@ -45,7 +45,7 @@ class _ChatDetailsScreenState extends State<ChatDetailsScreen> {
                SizedBox(height: 24.v),
                Expanded(
                  child: StreamBuilder<QuerySnapshot>(
-                   stream: Get.find<ChatService>().getMessages("default_chat"),
+                   stream: Get.find<ChatService>().getMessages(Get.arguments?['chatId'] ?? "default_chat"),
                    builder: (context, snapshot) {
                      if (!snapshot.hasData) return Center(child: CircularProgressIndicator());
                      final messages = snapshot.data!.docs;
@@ -142,7 +142,7 @@ class _ChatDetailsScreenState extends State<ChatDetailsScreen> {
            final text = controller.massageController.text;
            if (text.isNotEmpty) {
              final currentUserId = Get.find<AuthService>().currentUser.value?.userId;
-             Get.find<ChatService>().sendMessage("default_chat", currentUserId ?? "guest", text);
+             Get.find<ChatService>().sendMessage(Get.arguments?['chatId'] ?? "default_chat", currentUserId ?? "guest", text);
              controller.massageController.clear();
            }
          },

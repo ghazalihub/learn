@@ -199,14 +199,17 @@ class _HomeScreenPageState extends State<HomeScreenPage> {
           var model = controller.popularCourses[index];
           return Padding(
               padding: EdgeInsets.symmetric(vertical: 8.v),
-              child: LearnnewskillslistItemWidget(LearnnewskillslistItemModel(
-                model.thumbnailUrl,
-                model.title,
-                model.instructorImage,
-                model.instructorName,
-                model.category,
-                "${model.currency} ${model.price}",
-              )));
+              child: LearnnewskillslistItemWidget(
+                LearnnewskillslistItemModel(
+                  model.thumbnailUrl,
+                  model.title,
+                  model.instructorImage,
+                  model.instructorName,
+                  model.category,
+                  "${model.currency} ${model.price}",
+                ),
+                course: model,
+              ));
         });
   }
 

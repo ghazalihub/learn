@@ -33,7 +33,7 @@ class _ChatListPageState extends State<ChatListPage> {
           return animationfunction(index, GestureDetector(
 
               onTap: (){
-                Get.toNamed(AppRoutes.chatDetailsScreen);
+                Get.toNamed(AppRoutes.chatDetailsScreen, arguments: {'chatId': model.id});
               },
               child: UserprofileinfoItemWidget(model)));
         });

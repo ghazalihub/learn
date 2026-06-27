@@ -27,7 +27,11 @@ class PaymentService extends GetxService {
 
   Future<void> initStoreInfo() async {
     isAvailable.value = await _inAppPurchase.isAvailable();
-    // In a real app, you would fetch product IDs from your backend or courses.json
+    if (isAvailable.value) {
+      const Set<String> _kIds = <String>{'course_001', 'course_002'};
+      final ProductDetailsResponse response = await _inAppPurchase.queryProductDetails(_kIds);
+      products.assignAll(response.productDetails);
+    }
   }
 
   Future<void> buyCourse(CourseModel course) async {
@@ -56,6 +60,14 @@ class PaymentService extends GetxService {
         } else if (purchaseDetails.status == PurchaseStatus.purchased ||
                    purchaseDetails.status == PurchaseStatus.restored) {
           // verify purchase and deliver content
+          final courseId = purchaseDetails.productID;
+          final repo = Get.find<CourseRepository>();
+          final allCourses = await repo.getCourses();
+          final course = allCourses.firstWhereOrNull((c) => c.id == courseId);
+          if (course != null) {
+            await Get.find<CartService>().enroll(course);
+          }
+          Get.snackbar("Success", "Course purchased successfully!");
         }
         if (purchaseDetails.pendingCompletePurchase) {
           await _inAppPurchase.completePurchase(purchaseDetails);

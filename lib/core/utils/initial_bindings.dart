@@ -26,6 +26,7 @@ class InitialBindings extends Bindings {
     Get.put(ChatService());
     Get.put(WebRTCService());
     Get.put(NotificationService());
+    Get.find<NotificationService>().init();
     Connectivity connectivity = Connectivity();
     Get.put(NetworkInfo(connectivity));
   }

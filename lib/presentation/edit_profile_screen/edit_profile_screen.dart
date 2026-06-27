@@ -7,6 +7,8 @@ import 'package:flutter_elearning_app/widgets/app_bar/custom_app_bar.dart';
 import 'package:flutter_elearning_app/widgets/custom_elevated_button.dart';
 import 'package:flutter_elearning_app/widgets/custom_icon_button.dart';
 import 'package:flutter_elearning_app/widgets/custom_text_form_field.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 import 'controller/edit_profile_controller.dart';
 
 
@@ -24,9 +26,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
  @override
   void initState() {
-   controller.fullNameController.text = "Ronald Richards";
-    controller.emailController.text = "msg_ronaldrichards_gmail_com".tr;
-    controller.phoneNumberController.text = "405-555-0128";
+    final user = Get.find<AuthService>().currentUser.value;
+    controller.fullNameController.text = user?.name ?? "";
+    controller.emailController.text = user?.email ?? "";
     // TODO: implement initState
     super.initState();
   }
@@ -54,16 +56,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           child: Stack(
                               alignment: Alignment.bottomRight,
                               children: [
-                               CustomImageView(
-                                   imagePath: ImageConstant
-                                       .imgEllipse225100x100,
+                               Obx(() => CustomImageView(
+                                   imagePath: Get.find<AuthService>().currentUser.value?.profileImageUrl ?? ImageConstant.imgEllipse225100x100,
                                    height: 100.adaptSize,
                                    width: 100.adaptSize,
                                    radius: BorderRadius.circular(50.h),
-                                   alignment: Alignment.center),
+                                   alignment: Alignment.center)),
                                Padding(
                                    padding: EdgeInsets.only(bottom: 4.v),
                                    child: CustomIconButton(
+                                       onTap: () async {
+                                          final ImagePicker picker = ImagePicker();
+                                          final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+                                          if (image != null) {
+                                            Get.find<AuthService>().uploadProfileImage(File(image.path));
+                                          }
+                                       },
                                        height: 28.adaptSize,
                                        width: 28.adaptSize,
                                        padding: EdgeInsets.all(5.h),
