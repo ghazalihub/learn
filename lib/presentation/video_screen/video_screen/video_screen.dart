@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_elearning_app/core/app_export.dart';
 import 'package:flutter_elearning_app/presentation/video_screen/video_screen/controller/video_controller.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:visibility_detector/visibility_detector.dart'; // 1. Import package
 import '../../../widgets/app_bar/appbar_leading_image.dart';
 
 class VideoScreen extends StatefulWidget {
@@ -15,12 +14,11 @@ class VideoScreen extends StatefulWidget {
 class _VideoScreenState extends State<VideoScreen> {
   VideoController videoController = Get.put(VideoController());
   late YoutubePlayerController controller;
-  bool fullScreen = false;
 
   @override
   void initState() {
     super.initState();
-    final url = (Get.arguments is Map ? Get.arguments['url'] : null) ?? videoController.youtubeUrl;
+    String url = (Get.arguments is Map ? Get.arguments['url'] : null) ?? videoController.youtubeUrl;
     final videoId = YoutubePlayer.convertUrlToId(url) ?? "0Sg6QHmlFJE";
     controller = YoutubePlayerController(
       initialVideoId: videoId,
@@ -29,9 +27,10 @@ class _VideoScreenState extends State<VideoScreen> {
   }
 
   @override
-  void deactivate() { controller.pause(); super.deactivate(); }
-  @override
-  void dispose() { controller.dispose(); super.dispose(); }
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +48,19 @@ class _VideoScreenState extends State<VideoScreen> {
           ),
           backgroundColor: Colors.transparent,
         ),
-        body: Center(child: player),
+        // 2. Wrap the player widget to detect when the screen is hidden
+        body: Center(
+          child: VisibilityDetector(
+            key: const Key('video-screen-player'),
+            onVisibilityChanged: (visibilityInfo) {
+              // If the view drops below 1%, pause the player automatically
+              if (visibilityInfo.visibleFraction == 0.0) {
+                controller.pause();
+              }
+            },
+            child: player,
+          ),
+        ),
       ),
     );
   }

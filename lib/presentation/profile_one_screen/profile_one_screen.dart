@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_elearning_app/core/app_export.dart';
-import 'package:flutter_elearning_app/services/auth_service.dart';
 import 'package:flutter_elearning_app/widgets/app_bar/custom_app_bar.dart';
 import 'package:flutter_elearning_app/widgets/app_bar/appbar_subtitle.dart';
 
@@ -27,12 +26,12 @@ class ProfileOneScreen extends StatelessWidget {
                 Obx(() => Text(auth.currentUser.value?.name ?? "Guest User", style: theme.textTheme.titleLarge)),
                 Obx(() => Text(auth.currentUser.value?.email ?? "", style: theme.textTheme.bodyMedium)),
                 SizedBox(height: 32.v),
-                _buildOption(context, ImageConstant.imgUserPrimary, "lbl_my_profile".tr, () => Get.toNamed(AppRoutes.myProfileScreen)),
-                _buildOption(context, ImageConstant.imgFavoritePrimary, "lbl_favorite".tr, () => Get.toNamed(AppRoutes.favorite1Page)),
-                _buildOption(context, ImageConstant.imgSettingsPrimary, "lbl_settings".tr, () => {}),
-                _buildOption(context, ImageConstant.imgQuestionPrimary, "lbl_privacy_policy".tr, () => Get.toNamed(AppRoutes.privacyPolicyScreen)),
+                _buildOption(context, ImageConstant.imgUser, "lbl_my_profile".tr, () => Get.toNamed(AppRoutes.myProfileScreen)),
+                _buildOption(context, ImageConstant.imgFavouriteIcon, "lbl_favorite".tr, () => Get.toNamed(AppRoutes.favorite1Page)),
+                _buildOption(context, ImageConstant.imgSettings, "lbl_settings".tr, () => {}),
+                _buildOption(context, ImageConstant.imgLock, "lbl_privacy_policy".tr, () => Get.toNamed(AppRoutes.privacyPolicyScreen)),
                 SizedBox(height: 20.v),
-                _buildOption(context, ImageConstant.imgLogOut, "lbl_log_out".tr, () {
+                _buildOption(context, ImageConstant.imgLogoutIcon, "lbl_log_out".tr, () {
                   Get.bottomSheet(
                     Container(
                       decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.vertical(top: Radius.circular(20.h))),
