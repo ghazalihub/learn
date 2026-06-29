@@ -5,6 +5,8 @@ import 'package:flutter_elearning_app/core/app_export.dart';
 import 'package:flutter_elearning_app/widgets/app_bar/appbar_subtitle.dart';
 import 'package:flutter_elearning_app/widgets/app_bar/custom_app_bar.dart';
 import 'package:flutter_elearning_app/widgets/custom_elevated_button.dart';
+import 'package:flutter_elearning_app/services/chat_service.dart';
+import 'package:flutter_elearning_app/services/ad_service.dart';
 
 class ChatsPage extends StatefulWidget {
   ChatsPage({Key? key})
@@ -25,6 +27,7 @@ class _ChatsPageState extends State<ChatsPage> {
 
     return SafeArea(
       child: Scaffold(
+        backgroundColor: appTheme.bgColor,
         body: Container(
           width: double.maxFinite,
           decoration: AppDecoration.white,
@@ -61,7 +64,15 @@ class _ChatsPageState extends State<ChatsPage> {
                     ),
                     SizedBox(height: 28.v),
                     CustomElevatedButton(
-                      text: "lbl_go_to_home".tr,
+                      text: "Unlock Chat (Watch Ad)",
+                      onPressed: () {
+                        Get.find<AdService>().showRewardedAd(onUserEarnedReward: (ad, reward) {
+                          Get.find<ChatService>().unlockChat().then((_) {
+                            Get.snackbar("Success", "Chat unlocked for 4 hours!");
+                            setState(() {});
+                          });
+                        });
+                      },
                       margin: EdgeInsets.only(
                         left: 50.h,
                         right: 48.h,

@@ -1,3 +1,4 @@
+import 'package:flutter_elearning_app/services/auth_service.dart';
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
@@ -24,12 +25,13 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
  @override
  Widget build(BuildContext context) {
   mediaQueryData = MediaQuery.of(context);
-  return WillPopScope(
-      onWillPop: () async{
-       Get.back();
-       return true;
-      },
-      child: Scaffold(
+  return PopScope(
+   canPop: true,
+   onPopInvokedWithResult: (didPop, result) {
+    if (didPop) return;
+    // Get.back();
+   },
+   child: Scaffold(
           backgroundColor: appTheme.bgColor,
           resizeToAvoidBottomInset: false,
           body: SizedBox(
@@ -158,9 +160,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
  /// Navigates to the resetPasswordSuccessScreen when the action is triggered.
  onTapResetPassword() {
-  Get.toNamed(
-   AppRoutes.resetPasswordSuccessScreen,
-  );
+  // In a real app, you would use a code from verification screen
+  Get.find<AuthService>().resetPassword(Get.arguments ?? "user@example.com").then((_) {
+    Get.toNamed(
+     AppRoutes.resetPasswordSuccessScreen,
+    );
+  });
  }
 }
 

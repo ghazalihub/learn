@@ -4,6 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_elearning_app/core/app_export.dart';
 import 'package:flutter_elearning_app/widgets/custom_elevated_button.dart';
 import 'package:flutter_elearning_app/widgets/custom_rating_bar.dart';
+import 'package:flutter_elearning_app/data/models/course_model.dart';
+import 'package:flutter_elearning_app/services/payment_service.dart';
+import 'package:flutter_elearning_app/services/cart_service.dart';
+import 'package:flutter_elearning_app/services/ad_service.dart';
+import 'package:flutter_elearning_app/widgets/banner_ad_widget.dart';
 import '../course_details_screen/controller/course_details_controller.dart';
 import '../course_details_screen/models/widget_item_model.dart';
 import '../course_details_screen/widgets/widget_item_widget.dart';
@@ -21,6 +26,7 @@ class CourseDetailsAboutScreen extends StatefulWidget {
 }
 
 class _CourseDetailsAboutScreenState extends State<CourseDetailsAboutScreen> {
+  late CourseModel course;
   PageController pageController = PageController();
  CourseDetailsAboutController courseDetailsAboutController = Get.put(CourseDetailsAboutController());
   CustomerReviewsController customerReviewsController = Get.put(CustomerReviewsController());
@@ -29,19 +35,19 @@ class _CourseDetailsAboutScreenState extends State<CourseDetailsAboutScreen> {
 
  @override
   void initState() {
-    // TODO: implement initState
-   // setSafeAreaColor(color: Colors.transparent);
+    course = Get.arguments as CourseModel;
     super.initState();
   }
  @override
  Widget build(BuildContext context) {
   mediaQueryData = MediaQuery.of(context);
-  return WillPopScope(
-    onWillPop: ()async {
-      Get.back();
-      return true;
-    },
-    child: Scaffold(
+  return PopScope(
+   canPop: true,
+   onPopInvokedWithResult: (didPop, result) {
+    if (didPop) return;
+    // Get.back();
+   },
+   child: Scaffold(
      backgroundColor: appTheme.bgColor,
         resizeToAvoidBottomInset: false,
         body: SafeArea(
@@ -125,7 +131,7 @@ class _CourseDetailsAboutScreenState extends State<CourseDetailsAboutScreen> {
                                     itemBuilder: (context, index) {
                                     return
                                       CustomImageView(
-                                        imagePath: ImageConstant.imgRectangle4429,
+                                        imagePath: course.thumbnailUrl,
                                         height: double.infinity,
                                         width: double.infinity,
                                         radius: BorderRadius.circular(12.h),
@@ -193,13 +199,24 @@ SizedBox(height: 16.v,),
                                                   children: [
                                                     Padding(
                                                         padding: EdgeInsets.only(left: 16.h),
-                                                        child: Text("msg_how_to_become_an".tr,
+                                                        child: Text(course.title!,
                                                             style: CustomTextStyles.titleLarge20)),
                                                     SizedBox(height: 11.v),
                                                     Padding(
                                                         padding: EdgeInsets.only(left: 16.h),
-                                                        child: Text("lbl_45_00".tr,
-                                                            style: CustomTextStyles.titleMedium16)),
+                                                        child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          children: [
+                                                            Text("${course.currency} ${course.price}",
+                                                                style: CustomTextStyles.titleMedium16),
+                                                            if (course.validityDays != null)
+                                                              Padding(
+                                                                padding: EdgeInsets.only(right: 16.h),
+                                                                child: Text("Access: ${course.validityDays} Days",
+                                                                    style: CustomTextStyles.bodyMediumOnPrimary),
+                                                              ),
+                                                          ],
+                                                        )),
                                                     SizedBox(height: 11.v),
                                                     Padding(
                                                         padding: EdgeInsets.only(left: 16.h),
@@ -211,12 +228,12 @@ SizedBox(height: 16.v,),
                                                               margin: EdgeInsets.only(bottom: 2.v)),
                                                           Padding(
                                                               padding: EdgeInsets.only(left: 4.h),
-                                                              child: Text("lbl_4_0".tr,
+                                                              child: Text("4.0",
                                                                   style: CustomTextStyles
                                                                       .bodyMediumOnPrimary)),
                                                           Padding(
                                                               padding: EdgeInsets.only(left: 4.h),
-                                                              child: Text("lbl_4_2k_reviews".tr,
+                                                              child: Text("4.2k reviews",
                                                                   style: CustomTextStyles
                                                                       .bodyMediumOnPrimary))
                                                         ])),
@@ -232,7 +249,7 @@ SizedBox(height: 16.v,),
                                                             width: 396.h,
                                                             margin: EdgeInsets.symmetric(
                                                                 horizontal: 16.h),
-                                                            child: Text("msg_user_interface_ui".tr,
+                                                            child: Text(course.description!,
                                                                 maxLines: 8,
                                                                 overflow: TextOverflow.ellipsis,
                                                                 style: theme.textTheme.bodyLarge!
@@ -248,7 +265,7 @@ SizedBox(height: 16.v,),
                                                         child: Row(children: [
                                                           CustomImageView(
                                                               imagePath:
-                                                              ImageConstant.imgEllipse204948x48,
+                                                              course.instructorImage,
                                                               height: 48.adaptSize,
                                                               width: 48.adaptSize,
                                                               radius: BorderRadius.circular(24.h)),
@@ -259,13 +276,12 @@ SizedBox(height: 16.v,),
                                                                   crossAxisAlignment:
                                                                   CrossAxisAlignment.start,
                                                                   children: [
-                                                                    Text("msg_johnson_williams".tr,
+                                                                    Text(course.instructorName!,
                                                                         style: CustomTextStyles
                                                                             .titleMedium16),
                                                                     SizedBox(height: 8.v),
                                                                     Text(
-                                                                        "msg_senior_ui_ux_designer"
-                                                                            .tr,
+                                                                        course.category!,
                                                                         style: CustomTextStyles
                                                                             .bodyMedium14)
                                                                   ]))
@@ -275,16 +291,18 @@ SizedBox(height: 16.v,),
                                                     SizedBox(height: 18.v),
                                                     _buildFrameRow(),
                                                     SizedBox(height: 18.v),
+                                                    BannerAdWidget(),
+                                                    SizedBox(height: 18.v),
                                                     Padding(
                                                         padding: EdgeInsets.symmetric(horizontal: 16.h),
                                                         child: Row(
                                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                             children: [
-                                                              Text("154 lessons",
+                                                              Text("${course.lessons?.length ?? 0} lessons",
                                                                   style: theme.textTheme.titleMedium),
                                                               GestureDetector(
                                                                   onTap: () {
-                                                                   Get.toNamed(AppRoutes.lessonsScreen);
+                                                                   Get.toNamed(AppRoutes.lessonsScreen, arguments: course);
                                                                   },
                                                                   child: Padding(
                                                                       padding: EdgeInsets.only(bottom: 3.v),
@@ -416,17 +434,17 @@ SizedBox(height: 16.v,),
                 return SizedBox(height: 16.v);
               },
               itemCount:
-              courseDetailsController.lessonList.length>2?2:courseDetailsController.lessonList.length,
+              (course.lessons?.length ?? 0) > 2 ? 2 : (course.lessons?.length ?? 0),
               itemBuilder: (context, index) {
-                WidgetItemModel model = courseDetailsController.lessonList[index];
-                return WidgetItemWidget(model);
+                var lesson = course.lessons![index];
+                return WidgetItemWidget(WidgetItemModel(lesson.title, lesson.duration, false, index + 1, videoUrl: lesson.youtubeUrl));
               })));
  }
 
  /// Section Widget
  Widget _buildEnrollNow() {
   return CustomElevatedButton(
-      text: "lbl_enroll_now".tr,
+      text: (course.isFree ?? true) ? "lbl_enroll_now".tr : "lbl_enroll_now".tr + " (${course.currency} ${course.price})",
       margin: EdgeInsets.only(left: 16.h, right: 16.h, bottom: 40.v),
       onPressed: () {
        onTapEnrollNow();
@@ -452,11 +470,32 @@ SizedBox(height: 16.v,),
 
  /// Navigates to the cartScreen when the action is triggered.
  onTapEnrollNow() {
-  Get.toNamed(
-   AppRoutes.cartScreen,
-  );
+    if (course.isFree ?? true) {
+      Get.find<CartService>().enroll(course).then((_) {
+        Get.toNamed(AppRoutes.bookSuccessScreen);
+      });
+    } else {
+      Get.defaultDialog(
+        title: "Unlock Course",
+        middleText: "Would you like to buy this course or watch a short video to get a discount?",
+        actions: [
+          TextButton(onPressed: () {
+            Get.back();
+            Get.find<PaymentService>().buyCourse(course).then((_) {
+              Get.toNamed(AppRoutes.bookSuccessScreen);
+            });
+          }, child: Text("Buy Now")),
+          TextButton(onPressed: () {
+            Get.back();
+            Get.find<AdService>().showRewardedAd(onUserEarnedReward: (ad, reward) {
+              Get.snackbar("Reward", "You earned a discount! Proceeding to enroll...");
+              Get.find<CartService>().enroll(course).then((_) {
+                Get.toNamed(AppRoutes.bookSuccessScreen);
+              });
+            });
+          }, child: Text("Watch Ad")),
+        ]
+      );
+    }
  }
 }
-
-
-

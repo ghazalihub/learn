@@ -19,11 +19,13 @@ class _ResetPasswordSuccessScreenState extends State<ResetPasswordSuccessScreen>
  @override
  Widget build(BuildContext context) {
   mediaQueryData = MediaQuery.of(context);
-  return WillPopScope(
-   onWillPop: () async{
-     return false;
+  return PopScope(
+   canPop: false,
+   onPopInvokedWithResult: (didPop, result) {
+    if (didPop) return;
+
    },
-    child: Scaffold(
+   child: Scaffold(
      backgroundColor: appTheme.bgColor,
         body: SafeArea(
           child: Container(

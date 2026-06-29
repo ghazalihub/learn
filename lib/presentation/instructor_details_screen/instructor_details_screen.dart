@@ -6,11 +6,10 @@ import 'package:flutter_elearning_app/widgets/app_bar/appbar_trailing_image.dart
 import 'package:flutter_elearning_app/widgets/app_bar/custom_app_bar.dart';
 import 'package:flutter_elearning_app/widgets/custom_elevated_button.dart';
 
+import 'package:flutter_elearning_app/data/models/course_model.dart';
 import '../instructor_details_screen/widgets/userprofile1_item_widget.dart';
 import 'controller/instructor_details_controller.dart';
 import 'models/userprofile1_item_model.dart';
-
-
 
 class InstructorDetailsScreen extends StatefulWidget {
   const InstructorDetailsScreen({super.key});
@@ -20,7 +19,15 @@ class InstructorDetailsScreen extends StatefulWidget {
 }
 
 class _InstructorDetailsScreenState extends State<InstructorDetailsScreen> {
+ late InstructorModel instructor;
  InstructorDetailsController controller = Get.put(InstructorDetailsController());
+
+ @override
+ void initState() {
+   instructor = Get.arguments as InstructorModel;
+   super.initState();
+ }
+
  @override
  Widget build(BuildContext context) {
   mediaQueryData = MediaQuery.of(context);
@@ -39,15 +46,15 @@ class _InstructorDetailsScreenState extends State<InstructorDetailsScreen> {
                        left: 16.h, right: 16.h, bottom: 5.v),
                    child: Column(children: [
                     CustomImageView(
-                        imagePath: ImageConstant.imgEllipse225,
+                        imagePath: instructor.image,
                         height: 100.adaptSize,
                         width: 100.adaptSize,
                         radius: BorderRadius.circular(50.h)),
                     SizedBox(height: 18.v),
-                    Text("lbl_ronald_richards".tr,
+                    Text(instructor.name ?? "",
                         style: theme.textTheme.titleMedium),
                     SizedBox(height: 10.v),
-                    Text("msg_manager_at_solution2".tr,
+                    Text(instructor.role ?? "",
                         style: CustomTextStyles.bodyLargeGray700),
                     SizedBox(height: 24.v),
                     _buildDoctorReviews(),

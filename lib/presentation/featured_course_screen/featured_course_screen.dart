@@ -19,23 +19,22 @@ class FeaturedCourseScreen extends StatefulWidget {
 }
 
 class _FeaturedCourseScreenState extends State<FeaturedCourseScreen> {
- FeaturedCourseController featuredCourseController = Get.put(FeaturedCourseController());
+ FeaturedCourseController controller = Get.put(FeaturedCourseController());
  @override
  Widget build(BuildContext context) {
   mediaQueryData = MediaQuery.of(context);
-  return WillPopScope(
-    onWillPop: () async{
-      Get.back();
-      return true;
-    },
-    child: Scaffold(
+  return PopScope(
+   canPop: true,
+   onPopInvokedWithResult: (didPop, result) {
+    if (didPop) return;
+    // Get.back();
+   },
+   child: Scaffold(
       backgroundColor: appTheme.bgColor,
         body: SafeArea(
           child: SizedBox(
               width: double.maxFinite,
-              child: GetBuilder<FeaturedCourseController>(
-                init: FeaturedCourseController(),
-                builder:(controller) =>  Column(children: [
+              child: Obx(() => controller.isLoading.value ? Center(child: CircularProgressIndicator()) : Column(children: [
                  _buildHeader(),
                  SizedBox(height: 24.v),
                   Expanded(
@@ -49,13 +48,15 @@ class _FeaturedCourseScreenState extends State<FeaturedCourseScreen> {
                                   mainAxisSpacing: 16.h,
                                   crossAxisSpacing: 16.h),
                               physics: BouncingScrollPhysics(),
-                              itemCount: controller.featuredCourceList.length,
+                              itemCount: controller.courses.length,
                               itemBuilder: (context, index) {
-                                FavoritegridItemModel model = controller
-                                    .featuredCourceList[index];
-                                return animationfunction(index, FavoritegridItemWidget(model, onTapFund: () {
-                                  onTapFund();
-                                }));
+                                var model = controller.courses[index];
+                                return animationfunction(index, FavoritegridItemWidget(
+                                  FavoritegridItemModel(model.thumbnailUrl, model.title, model.instructorImage, model.instructorName, model.category, "${model.currency} ${model.price}", false),
+                                  onTapFund: () {
+                                    Get.toNamed(AppRoutes.courseDetailsAboutScreen, arguments: model);
+                                  }
+                                ));
                               }))),
                   SizedBox(height: 24.v),
                 ]),
@@ -108,18 +109,9 @@ class _FeaturedCourseScreenState extends State<FeaturedCourseScreen> {
  //              }))));
  // }
 
- /// Navigates to the courseDetailsAboutScreen when the action is triggered.
- onTapFund() {
-  Get.toNamed(AppRoutes.courseDetailsAboutScreen);
- }
 
  /// Navigates to the previous screen.
  onTapArrowLeft() {
   Get.back();
  }
 }
-
-
-
-
-

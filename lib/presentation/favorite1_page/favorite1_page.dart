@@ -10,10 +10,7 @@ import '../featured_course_screen/widgets/favoritegrid_item_widget.dart';
 import 'controller/favorite1_controller.dart';
 
 class Favorite1Page extends StatefulWidget {
-  Favorite1Page({Key? key})
-      : super(
-          key: key,
-        );
+  Favorite1Page({Key? key}) : super(key: key);
 
   @override
   State<Favorite1Page> createState() => _Favorite1PageState();
@@ -27,92 +24,112 @@ class _Favorite1PageState extends State<Favorite1Page> {
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
 
-    return GetBuilder<Favorite1Controller>(
-      init: Favorite1Controller(),
-      builder:(controller) =>  controller.favouriteList.isEmpty?
-      Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          _buildAppBar(),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 56.h),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+    return Scaffold(
+      backgroundColor: appTheme.bgColor,
+      body: SafeArea(
+        child: Obx(() {
+          if (controller.isLoading.value) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (controller.favoriteCourses.isEmpty) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CustomImageView(
-                  imagePath: PrefUtils().getThemeData() == "primary"?ImageConstant.imgGroup34160154x154:ImageConstant.imgNoFavouritIcon,
-                  height: 154.adaptSize,
-                  width: 154.adaptSize,
-                ),
-                SizedBox(height: 26.v),
-                Text(
-                  "lbl_no_favorite_yet".tr,
-                  style: theme.textTheme.titleLarge,
-                ),
-                SizedBox(height: 11.v),
-                SizedBox(
-                  width: 312.h,
-                  child: Text(
-                    "msg_no_favorite_the".tr,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                    style: theme.textTheme.bodyLarge!.copyWith(
-                      height: 1.50,
-                    ),
+                _buildAppBar(),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 56.h),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CustomImageView(
+                        imagePath: PrefUtils().getThemeData() == "primary"
+                            ? ImageConstant.imgGroup34160154x154
+                            : ImageConstant.imgNoFavouritIcon,
+                        height: 154.adaptSize,
+                        width: 154.adaptSize,
+                      ),
+                      SizedBox(height: 26.v),
+                      Text(
+                        "lbl_no_favorite_yet".tr,
+                        style: theme.textTheme.titleLarge,
+                      ),
+                      SizedBox(height: 11.v),
+                      SizedBox(
+                        width: 312.h,
+                        child: Text(
+                          "msg_no_favorite_the".tr,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.bodyLarge!.copyWith(
+                            height: 1.50,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 28.v),
+                      CustomElevatedButton(
+                        onPressed: () {
+                          customBottomBarController.getIndex(0);
+                        },
+                        text: "Go to home",
+                        margin: EdgeInsets.only(
+                          left: 33.h,
+                          right: 31.h,
+                        ),
+                      ),
+                      SizedBox(height: 5.v),
+                    ],
                   ),
                 ),
-                SizedBox(height: 28.v),
-                CustomElevatedButton(
-                  onPressed: (){
-                    customBottomBarController.getIndex(0);
-                  },
-                  text: "Go to home",
-                  margin: EdgeInsets.only(
-                    left: 33.h,
-                    right: 31.h,
-                  ),
-                ),
-                SizedBox(height: 5.v),
+                SizedBox()
               ],
-            ),
-          ),
-          SizedBox()
-        ],
-      ): Column(
-        children: [
-          _buildAppBar(),
-          SizedBox(height: 24.v),
-          Expanded(
-              child: Padding(
+            );
+          }
+          return Column(
+            children: [
+              _buildAppBar(),
+              SizedBox(height: 24.v),
+              Expanded(
+                child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.h),
                   child: GridView.builder(
-                      shrinkWrap: true,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          mainAxisExtent: 238.v,
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 16.h,
-                          crossAxisSpacing: 16.h),
-                      physics: BouncingScrollPhysics(),
-                      itemCount: controller.favouriteList.length,
-                      itemBuilder: (context, index) {
-                        FavoritegridItemModel model =
-                            controller.favouriteList[index];
-                        return animationfunction(
-                            index,
-                            FavoritegridItemWidget(model, onTapFund: () {
-                              Get.toNamed(AppRoutes.courseDetailsAboutScreen);
-                            }));
-                      }))),
-        ],
+                    shrinkWrap: true,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        mainAxisExtent: 238.v,
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 16.h,
+                        crossAxisSpacing: 16.h),
+                    physics: BouncingScrollPhysics(),
+                    itemCount: controller.favoriteCourses.length,
+                    itemBuilder: (context, index) {
+                      var course = controller.favoriteCourses[index];
+                      var model = FavoritegridItemModel(
+                          course.thumbnailUrl,
+                          course.title,
+                          course.instructorImage,
+                          course.instructorName,
+                          course.category,
+                          "${course.currency} ${course.price}",
+                          true);
+                      return animationfunction(
+                          index,
+                          FavoritegridItemWidget(model, onTapFund: () {
+                            Get.toNamed(AppRoutes.courseDetailsAboutScreen,
+                                arguments: course);
+                          }));
+                    },
+                  ),
+                ),
+              ),
+            ],
+          );
+        }),
       ),
     );
   }
 
   PreferredSizeWidget _buildAppBar() {
     return CustomAppBar(
-        height: 64.v,
-        centerTitle: true,
-        title: AppbarSubtitle(text: "Favourite"));
+        height: 64.v, centerTitle: true, title: AppbarSubtitle(text: "Favourite"));
   }
 }

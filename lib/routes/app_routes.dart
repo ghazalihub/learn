@@ -1,9 +1,5 @@
-import 'package:flutter_elearning_app/presentation/add_new_cards1_screen/add_new_cards1_screen.dart';
-import 'package:flutter_elearning_app/presentation/add_new_cards1_screen/binding/add_new_cards1_binding.dart';
 import 'package:flutter_elearning_app/presentation/add_new_cards_screen/add_new_cards_screen.dart';
 import 'package:flutter_elearning_app/presentation/add_new_cards_screen/binding/add_new_cards_binding.dart';
-import 'package:flutter_elearning_app/presentation/app_navigation_screen/app_navigation_screen.dart';
-import 'package:flutter_elearning_app/presentation/app_navigation_screen/binding/app_navigation_binding.dart';
 import 'package:flutter_elearning_app/presentation/book_success_screen/binding/book_success_binding.dart';
 import 'package:flutter_elearning_app/presentation/book_success_screen/book_success_screen.dart';
 import 'package:flutter_elearning_app/presentation/call_details_screen/binding/call_details_binding.dart';
@@ -24,8 +20,6 @@ import 'package:flutter_elearning_app/presentation/customer_reviews_screen/bindi
 import 'package:flutter_elearning_app/presentation/customer_reviews_screen/customer_reviews_screen.dart';
 import 'package:flutter_elearning_app/presentation/edit_profile_screen/binding/edit_profile_binding.dart';
 import 'package:flutter_elearning_app/presentation/edit_profile_screen/edit_profile_screen.dart';
-import 'package:flutter_elearning_app/presentation/favorite_screen/binding/favorite_binding.dart';
-import 'package:flutter_elearning_app/presentation/favorite_screen/favorite_screen.dart';
 import 'package:flutter_elearning_app/presentation/featured_course_screen/binding/featured_course_binding.dart';
 import 'package:flutter_elearning_app/presentation/featured_course_screen/featured_course_screen.dart';
 import 'package:flutter_elearning_app/presentation/forgot_password_screen/binding/forgot_password_binding.dart';
@@ -54,10 +48,6 @@ import 'package:flutter_elearning_app/presentation/notifications_screen/binding/
 import 'package:flutter_elearning_app/presentation/notifications_screen/notifications_screen.dart';
 import 'package:flutter_elearning_app/presentation/onboarding1_screen/binding/onboarding1_binding.dart';
 import 'package:flutter_elearning_app/presentation/onboarding1_screen/onboarding1_screen.dart';
-import 'package:flutter_elearning_app/presentation/onboarding_screen/binding/onboarding_binding.dart';
-import 'package:flutter_elearning_app/presentation/onboarding_screen/onboarding_screen.dart';
-import 'package:flutter_elearning_app/presentation/onboarding_screen_one_screen/binding/onboarding_screen_one_binding.dart';
-import 'package:flutter_elearning_app/presentation/onboarding_screen_one_screen/onboarding_screen_one_screen.dart';
 import 'package:flutter_elearning_app/presentation/payment_method_screen/binding/payment_method_binding.dart';
 import 'package:flutter_elearning_app/presentation/payment_method_screen/payment_method_screen.dart';
 import 'package:flutter_elearning_app/presentation/popular_courses_screen/binding/popular_courses_binding.dart';
@@ -96,7 +86,6 @@ import '../presentation/video_screen/video_screen/video_screen.dart';
 class AppRoutes {
   static const String splashScreen = '/splash_screen';
 
-  static const String onboardingScreen = '/onboarding_screen';
 
   static const String onboardingScreenOneScreen =
       '/onboarding_screen_one_screen';
@@ -163,7 +152,6 @@ class AppRoutes {
 
   static const String courseDetailsScreen = '/course_details_screen';
 
-  static const String favoriteScreen = '/favorite_screen';
 
   static const String favorite1Page = '/favorite1_page';
 
@@ -196,7 +184,6 @@ class AppRoutes {
 
   static const String addNewCardsScreen = '/add_new_cards_screen';
 
-  static const String addNewCards1Screen = '/add_new_cards1_screen';
 
   static const String notificationsScreen = '/notifications_screen';
 
@@ -204,8 +191,7 @@ class AppRoutes {
 
   static const String logOutScreen = '/log_out_screen';
 
-  static const String appNavigationScreen = '/app_navigation_screen';
-  static const String videoScreen = '/VideoScreen';
+    static const String videoScreen = '/VideoScreen';
 
   static const String initialRoute = '/initialRoute';
 
@@ -218,22 +204,8 @@ class AppRoutes {
         SplashBinding(),
       ],
     ),
-    GetPage(
-      transition: Transition.rightToLeft,
-      name: onboardingScreen,
-      page: () => OnboardingScreen(),
-      bindings: [
-        OnboardingBinding(),
-      ],
-    ),
-    GetPage(
-      transition: Transition.rightToLeft,
-      name: onboardingScreenOneScreen,
-      page: () => OnboardingScreenOneScreen(),
-      bindings: [
-        OnboardingScreenOneBinding(),
-      ],
-    ),
+
+
     GetPage(
       transition: Transition.rightToLeft,
       name: onboarding1Screen,
@@ -450,14 +422,7 @@ class AppRoutes {
         CourseDetailsBinding(),
       ],
     ),
-    GetPage(
-      transition: Transition.rightToLeft,
-      name: favoriteScreen,
-      page: () => FavoriteScreen(),
-      bindings: [
-        FavoriteBinding(),
-      ],
-    ),
+
     GetPage(
       transition: Transition.rightToLeft,
       name: chatListTabContainerScreen,
@@ -530,14 +495,7 @@ class AppRoutes {
         AddNewCardsBinding(),
       ],
     ),
-    GetPage(
-      transition: Transition.rightToLeft,
-      name: addNewCards1Screen,
-      page: () => AddNewCards1Screen(),
-      bindings: [
-        AddNewCards1Binding(),
-      ],
-    ),
+
     GetPage(
       transition: Transition.rightToLeft,
       name: notificationsScreen,
@@ -562,14 +520,7 @@ class AppRoutes {
         LogOutBinding(),
       ],
     ),
-    GetPage(
-      transition: Transition.rightToLeft,
-      name: appNavigationScreen,
-      page: () => AppNavigationScreen(),
-      bindings: [
-        AppNavigationBinding(),
-      ],
-    ),
+
     GetPage(
       transition: Transition.rightToLeft,
       name: videoScreen,

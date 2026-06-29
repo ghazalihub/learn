@@ -6,5 +6,6 @@ class WidgetItemModel {
   String? min;
   bool? isComplete;
   int? lessonNo;
-  WidgetItemModel(this.title, this.min, this.isComplete, this.lessonNo);
+  String? videoUrl;
+  WidgetItemModel(this.title, this.min, this.isComplete, this.lessonNo, {this.videoUrl});
 }

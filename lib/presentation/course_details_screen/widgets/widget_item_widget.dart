@@ -5,6 +5,9 @@ import '../controller/course_details_controller.dart';
 import '../models/widget_item_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elearning_app/core/app_export.dart';
+import 'package:flutter_elearning_app/data/repositories/course_repository.dart';
+import 'package:flutter_elearning_app/services/ad_service.dart';
+import 'package:flutter_elearning_app/services/auth_service.dart';
 
 // ignore: must_be_immutable
 class WidgetItemWidget extends StatefulWidget {
@@ -25,20 +28,54 @@ class _WidgetItemWidgetState extends State<WidgetItemWidget> {
   VideoController vidioController = Get.put(VideoController());
   var controller = Get.find<CourseDetailsController>();
 
+  void _playVideo() {
+    final url = widget.widgetItemModelObj.videoUrl ?? "https://www.youtube.com/watch?v=0Sg6QHmlFJE";
+    vidioController.youtubeUrl = url;
+    Get.toNamed(AppRoutes.videoScreen, arguments: {'url': url})!.then((value) {
+      Future.delayed(Duration(milliseconds: 100), () {
+        SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        vidioController.youtubeUrl = "https://www.youtube.com/watch?v=0Sg6QHmlFJE";
-        Get.toNamed(
-          AppRoutes.videoScreen,
-        )!
-            .then((value) {
-          Future.delayed(Duration(milliseconds: 100), () {
-            SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-                overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);
-          });
-        });
+      onTap: () async {
+        final repo = Get.find<CourseRepository>();
+        final auth = Get.find<AuthService>();
+        final lesson = widget.widgetItemModelObj;
+        final courseId = controller.course.id ?? "course_001";
+
+        bool isEnrolled = auth.currentUser.value?.enrolledCourses?.contains(courseId) ?? false;
+
+        if (isEnrolled) {
+          _playVideo();
+          return;
+        }
+
+        bool isUnlocked = await repo.isLessonUnlocked(courseId, lesson.title!);
+
+        if (!isUnlocked) {
+          Get.defaultDialog(
+            title: "Unlock Free Lesson",
+            middleText: "Watch a short ad to watch this lecture for free!",
+            actions: [
+              TextButton(onPressed: () => Get.back(), child: Text("Cancel")),
+              TextButton(onPressed: () {
+                Get.back();
+                Get.find<AdService>().showRewardedAd(onUserEarnedReward: (ad, reward) {
+                  repo.unlockLesson(courseId, lesson.title!).then((_) {
+                    setState(() {});
+                    _playVideo();
+                  });
+                });
+              }, child: Text("Watch Ad")),
+            ]
+          );
+        } else {
+          _playVideo();
+        }
       },
       child: Container(
         padding: EdgeInsets.symmetric(
@@ -89,11 +126,17 @@ class _WidgetItemWidgetState extends State<WidgetItemWidget> {
               ),
             ),
             Spacer(),
-            CustomImageView(
-              imagePath: widget.widgetItemModelObj.isComplete!?ImageConstant.imgLessonTickIcon:ImageConstant.imgPlayIcon,
-              height: 32.adaptSize,
-              width: 32.adaptSize,
-              margin: EdgeInsets.symmetric(vertical: 7.v),
+            FutureBuilder<bool>(
+              future: Get.find<CourseRepository>().isLessonUnlocked(controller.course.id ?? "course_001", widget.widgetItemModelObj.title!),
+              builder: (context, snapshot) {
+                bool unlocked = snapshot.data ?? false;
+                return CustomImageView(
+                  imagePath: unlocked ? ImageConstant.imgLessonTickIcon : ImageConstant.imgPlayIcon,
+                  height: 32.adaptSize,
+                  width: 32.adaptSize,
+                  margin: EdgeInsets.symmetric(vertical: 7.v),
+                );
+              }
             ),
           ],
         ),

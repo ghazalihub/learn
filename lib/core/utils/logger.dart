@@ -7,7 +7,7 @@ class Logger {
 
   static void log(dynamic data, {StackTrace? stackTrace}) {
     if (_logMode == LogMode.debug) {
-      print("Error: $data$stackTrace");
+      //  // print("Error: $data$stackTrace");
     }
   }
 }

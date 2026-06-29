@@ -23,7 +23,7 @@ class AppbarTitleCircleimage extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadiusStyle.circleBorder24,
       onTap: () {
-        onTap!.call();
+        onTap?.call();
       },
       child: Padding(
         padding: margin ?? EdgeInsets.zero,

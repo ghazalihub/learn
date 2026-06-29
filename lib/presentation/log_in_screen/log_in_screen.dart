@@ -24,10 +24,11 @@ class _LogInScreenState extends State<LogInScreen> {
  @override
  Widget build(BuildContext context) {
   mediaQueryData = MediaQuery.of(context);
-  return WillPopScope(
-   onWillPop: () async{
+  return PopScope(
+   canPop: false,
+   onPopInvokedWithResult: (didPop, result) {
+    if (didPop) return;
     closeApp();
-    return false;
    },
    child: Scaffold(
      backgroundColor: appTheme.bgColor,
@@ -164,15 +165,13 @@ class _LogInScreenState extends State<LogInScreen> {
 
  /// Section Widget
  Widget _buildLoginButton() {
-  return CustomElevatedButton(
-      text: "lbl_log_in".tr,
-      onPressed: () {
+  return Obx(() => CustomElevatedButton(
+      text: controller.isLoading.value ? "Loading..." : "lbl_log_in".tr,
+      onPressed: controller.isLoading.value ? null : () {
         if(_formKey.currentState!.validate()){
-          PrefUtils.setIsSignIn(false);
-          onTapLoginButton();
+          controller.login();
         }
-
-      });
+      }));
  }
 
  /// Section Widget
@@ -205,7 +204,7 @@ class _LogInScreenState extends State<LogInScreen> {
           ),
           buttonTextStyle: CustomTextStyles.titleMedium16,
           onPressed: () {
-
+            controller.signInWithGoogle();
           }));
  }
 
@@ -231,18 +230,37 @@ class _LogInScreenState extends State<LogInScreen> {
           ),
           buttonTextStyle: CustomTextStyles.titleMedium16,
           onPressed: () {
-
+            controller.signInWithFacebook();
           }));
  }
 
  /// Section Widget
+  Widget _buildInstagramButton() {
+    return Expanded(
+        child: CustomElevatedButton(
+            height: 54.v,
+            text: "Instagram",
+            margin: EdgeInsets.only(left: 8.h),
+            buttonStyle: CustomButtonStyles.fillGray.copyWith(
+              backgroundColor: MaterialStatePropertyAll(appTheme.containerbgColor),
+            ),
+            buttonTextStyle: CustomTextStyles.titleMedium16,
+            onPressed: () {
+              controller.signInWithInstagram();
+            }));
+  }
+
  Widget _buildSocial() {
-  return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 8.h),
-      child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [_buildGoogleButton(), _buildFacebookButton()]));
- }
+    return Padding(
+        padding: EdgeInsets.symmetric(horizontal: 8.h),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildGoogleButton(),
+              _buildFacebookButton(),
+              _buildInstagramButton(),
+            ]));
+  }
 
  /// Navigates to the forgotPasswordScreen when the action is triggered.
  onTapTxtForgotPassword() {

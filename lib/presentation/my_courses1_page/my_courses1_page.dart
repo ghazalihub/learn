@@ -23,9 +23,11 @@ class _MyCourses1PageState extends State<MyCourses1Page> {
   @override
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
-    return GetBuilder<MyCourses1Controller>(
-      init: MyCourses1Controller(),
-      builder:(controller) =>    controller.myCourcesList.isEmpty?
+    return Obx(() {
+      if (controller.isLoading.value) {
+        return Scaffold(body: Center(child: CircularProgressIndicator()));
+      }
+      return controller.myCourses.isEmpty?
       Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -87,17 +89,17 @@ class _MyCourses1PageState extends State<MyCourses1Page> {
               separatorBuilder: (context, index) {
                return SizedBox(height: 16.v);
               },
-              itemCount: controller.myCourcesList.length,
+              itemCount: controller.myCourses.length,
               itemBuilder: (context, index) {
-               FundlistItemModel model = controller.myCourcesList[index];
-               return FundlistItemWidget(model, onTapFund: () {
-                onTapFund();
+               var model = controller.myCourses[index];
+               return FundlistItemWidget(FundlistItemModel(model.thumbnailUrl, model.title, model.instructorImage, model.instructorName, model.category, 0.5), onTapFund: () {
+                Get.toNamed(AppRoutes.courseDetailsAboutScreen, arguments: model);
                });
               }),
         )
        ],
-      ),
-    );
+      );
+    });
   }
 
   /// Section Widget

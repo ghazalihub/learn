@@ -4,6 +4,7 @@ import 'controller/call_details_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elearning_app/core/app_export.dart';
 import 'package:flutter_elearning_app/widgets/custom_icon_button.dart';
+import 'package:flutter_elearning_app/services/webrtc_service.dart';
 
 
 
@@ -16,16 +17,27 @@ class CallDetailsScreen extends StatefulWidget {
 
 class _CallDetailsScreenState extends State<CallDetailsScreen> {
   CallDetailsController controller = Get.put(CallDetailsController());
+  final WebRTCService _webrtc = Get.find<WebRTCService>();
+
+  @override
+  void initState() {
+    super.initState();
+    _webrtc.initRenderers().then((_) {
+      _webrtc.makeCall();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
 
-    return WillPopScope(
-      onWillPop: () async{
-        Get.back();
-        return true;
-      },
-      child: Scaffold(
+    return PopScope(
+   canPop: true,
+   onPopInvokedWithResult: (didPop, result) {
+    if (didPop) return;
+    // Get.back();
+   },
+   child: Scaffold(
         backgroundColor: appTheme.bgColor,
         body: SafeArea(
           child: Center(
@@ -78,6 +90,7 @@ class _CallDetailsScreenState extends State<CallDetailsScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CustomIconButton(
+            onTap: () => _webrtc.localRenderer.srcObject?.getAudioTracks().forEach((t) => t.enabled = !t.enabled),
             height: 58.adaptSize,
             width: 58.adaptSize,
             padding: EdgeInsets.all(16.h),

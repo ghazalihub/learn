@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_elearning_app/core/app_export.dart';
-import 'package:flutter_elearning_app/widgets/custom_icon_button.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import '../controller/my_courses1_controller.dart';
 import '../models/fundlist_item_model.dart';
@@ -56,24 +55,6 @@ class _FundlistItemWidgetState extends State<FundlistItemWidget> {
               child: Stack(
                 alignment: Alignment.bottomCenter,
                 children: [
-                  CustomIconButton(
-                    onTap: () {
-                      widget.fundlistItemModelObj.isLike =
-                          !widget.fundlistItemModelObj.isLike!;
-                      controller.update();
-                    },
-                    height: 28.adaptSize,
-                    width: 28.adaptSize,
-                    padding: EdgeInsets.all(6.h),
-                    decoration: IconButtonStyleHelper.outlineBlackTL14,
-                    alignment: Alignment.topRight,
-                    child: CustomImageView(
-                      color: appTheme.black900,
-                      imagePath: widget.fundlistItemModelObj.isLike!
-                          ? ImageConstant.imgFavouriteIcon
-                          : ImageConstant.imgUnFavouriteIcon,
-                    ),
-                  ),
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Column(
@@ -94,7 +75,7 @@ class _FundlistItemWidgetState extends State<FundlistItemWidget> {
                         ),
                         SizedBox(height: 8.v),
                         Text(
-                          widget.fundlistItemModelObj.time!,
+                          widget.fundlistItemModelObj.category ?? "",
                           style: CustomTextStyles.bodySmallBlack900,
                         ),
                         SizedBox(height: 11.v),
@@ -113,14 +94,12 @@ class _FundlistItemWidgetState extends State<FundlistItemWidget> {
                                 ),
                                 child: LinearPercentIndicator(
                                   padding: EdgeInsets.zero,
-barRadius: Radius.circular(16.h),
+                                  barRadius: Radius.circular(16.h),
                                   backgroundColor:appTheme.progressBarColor ,
 
                                   animation: true,
                                   lineHeight: 6.v,
-                                  percent: double.parse(
-                                      widget.fundlistItemModelObj.progress!) /
-                                      100,
+                                  percent: widget.fundlistItemModelObj.progress ?? 0,
                                   progressColor:appTheme.buttonColor,
                                 ),
                               ),
@@ -128,7 +107,7 @@ barRadius: Radius.circular(16.h),
                             Padding(
                               padding: EdgeInsets.only(left: 5.h),
                               child: Text(
-                                "${widget.fundlistItemModelObj.progress!}%",
+                                "${((widget.fundlistItemModelObj.progress ?? 0) * 100).toInt()}%",
                                 style: CustomTextStyles.bodySmallBlack900,
                               ),
                             ),

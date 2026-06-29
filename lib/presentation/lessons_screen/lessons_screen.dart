@@ -3,6 +3,7 @@ import 'package:flutter_elearning_app/core/app_export.dart';
 import 'package:flutter_elearning_app/widgets/app_bar/appbar_leading_image.dart';
 import 'package:flutter_elearning_app/widgets/app_bar/appbar_subtitle.dart';
 import 'package:flutter_elearning_app/widgets/app_bar/custom_app_bar.dart';
+import 'package:flutter_elearning_app/data/models/course_model.dart';
 import '../course_details_screen/controller/course_details_controller.dart';
 import '../course_details_screen/models/widget_item_model.dart';
 import '../course_details_screen/widgets/widget_item_widget.dart';
@@ -22,8 +23,15 @@ class LessonsScreen extends StatefulWidget {
 }
 
 class _LessonsScreenState extends State<LessonsScreen> {
+ late CourseModel course;
  LessonsController controller = Get.put(LessonsController());
  CourseDetailsController courseDetailsController = Get.put(CourseDetailsController());
+
+ @override
+ void initState() {
+   course = Get.arguments as CourseModel;
+   super.initState();
+ }
 
  @override
  Widget build(BuildContext context) {
@@ -44,10 +52,10 @@ class _LessonsScreenState extends State<LessonsScreen> {
                    return SizedBox(height: 16.v);
                   },
                   itemCount:
-                  courseDetailsController.lessonList.length,
+                  course.lessons?.length ?? 0,
                   itemBuilder: (context, index) {
-                   WidgetItemModel model = courseDetailsController.lessonList[index];
-                   return WidgetItemWidget(model);
+                   var lesson = course.lessons![index];
+                   return WidgetItemWidget(WidgetItemModel(lesson.title, lesson.duration, false, index + 1, videoUrl: lesson.youtubeUrl));
                   }),
             ),
           ],
@@ -78,7 +86,3 @@ class _LessonsScreenState extends State<LessonsScreen> {
   Get.back();
  }
 }
-
-
-
-

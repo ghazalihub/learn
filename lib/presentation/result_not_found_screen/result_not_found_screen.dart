@@ -52,7 +52,7 @@ class ResultNotFoundScreen extends GetWidget<ResultNotFoundController> {
                   maxHeight: 56.v,
                 ),
                 contentPadding: EdgeInsets.symmetric(vertical: 18.v),
-                borderDecoration: TextFormFieldStyleHelper.fillGrayTL161,
+                borderDecoration: CustomTextFormFieldStyleHelper.fillGrayTL161,
                 fillColor: appTheme.gray10001,
               ),
               Spacer(

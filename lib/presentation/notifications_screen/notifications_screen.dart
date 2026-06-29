@@ -58,18 +58,26 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   return Expanded(
       child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.h),
-          child: ListView.separated(
-              physics: BouncingScrollPhysics(),
-              shrinkWrap: true,
-              separatorBuilder: (context, index) {
-                return SizedBox(height: 16.v);
-              },
-              itemCount: controller.getNotificationList.length,
-              itemBuilder: (context, index) {
-                NotificationrowItemModel model = controller
-                    .getNotificationList[index];
-                return animationfunction(index, NotificationrowItemWidget(model));
-              })));
+          child: Obx(() {
+            if (controller.isLoading.value) {
+              return Center(child: CircularProgressIndicator());
+            }
+            if (controller.getNotificationList.isEmpty) {
+              return Center(child: Text("No notifications yet"));
+            }
+            return ListView.separated(
+                physics: BouncingScrollPhysics(),
+                shrinkWrap: true,
+                separatorBuilder: (context, index) {
+                  return SizedBox(height: 16.v);
+                },
+                itemCount: controller.getNotificationList.length,
+                itemBuilder: (context, index) {
+                  NotificationrowItemModel model = controller
+                      .getNotificationList[index];
+                  return animationfunction(index, NotificationrowItemWidget(model));
+                });
+          })));
  }
 
  /// Navigates to the previous screen.

@@ -23,12 +23,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
  @override
  Widget build(BuildContext context) {
   mediaQueryData = MediaQuery.of(context);
-  return WillPopScope(
-    onWillPop: ()async {
-      Get.back();
-      return true;
-    },
-    child: Scaffold(
+  return PopScope(
+   canPop: true,
+   onPopInvokedWithResult: (didPop, result) {
+    if (didPop) return;
+    // Get.back();
+   },
+   child: Scaffold(
      backgroundColor: appTheme.bgColor,
         resizeToAvoidBottomInset: false,
         body: SafeArea(
@@ -195,14 +196,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
  /// Section Widget
  Widget _buildLogIn() {
-  return CustomElevatedButton(
-      text: "lbl_sign_up".tr,
-      onPressed: () {
+  return Obx(() => CustomElevatedButton(
+      text: controller.isLoading.value ? "Loading..." : "lbl_sign_up".tr,
+      onPressed: controller.isLoading.value ? null : () {
         if(_formKey.currentState!.validate()){
-          Get.back();
+          controller.signUp();
         }
-
-      });
+      }));
  }
 
  /// Section Widget
@@ -234,7 +234,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
           buttonTextStyle: CustomTextStyles.titleMedium16,
           onPressed: () {
-
+            controller.signInWithGoogle();
           }));
  }
 
@@ -260,7 +260,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
           buttonTextStyle: CustomTextStyles.titleMedium16,
           onPressed: () {
-
+            controller.signInWithFacebook();
           }));
  }
 

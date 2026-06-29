@@ -27,12 +27,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
  @override
  Widget build(BuildContext context) {
   mediaQueryData = MediaQuery.of(context);
-  return WillPopScope(
-   onWillPop: () async{
-    Get.back();
-     return true;
+  return PopScope(
+   canPop: true,
+   onPopInvokedWithResult: (didPop, result) {
+    if (didPop) return;
+    // Get.back();
    },
-    child: Scaffold(
+   child: Scaffold(
      backgroundColor: appTheme.bgColor,
         resizeToAvoidBottomInset: false,
         body: SafeArea(
@@ -58,11 +59,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         SizedBox(height: 23.v),
                         _buildMasterUsername(),
                         SizedBox(height: 30.v),
-                        CustomElevatedButton(
-                            text: "lbl_send".tr,
-                            onPressed: () {
-                             onTapSend();
-                            }),
+                        Obx(() => CustomElevatedButton(
+                            text: controller.isLoading.value ? "Sending..." : "lbl_send".tr,
+                            onPressed: controller.isLoading.value ? null : () {
+                             if(_formKey.currentState!.validate()){
+                              controller.sendResetLink();
+                             }
+                            })),
                         SizedBox(height: 5.v)
                        ]))
                   ]))),

@@ -50,9 +50,11 @@ class _HomeScreenContainerScreenState extends State<HomeScreenContainerScreen> {
   mediaQueryData = MediaQuery.of(context);
   return GetBuilder<CustomBottomBarController>(
    init: CustomBottomBarController(),
-   builder: (controller) => WillPopScope(
-    onWillPop: () async {
-     if (controller.selectedIndex == 0) {
+   builder: (controller) => PopScope(
+   canPop: false,
+   onPopInvokedWithResult: (didPop, result) {
+    if (didPop) return;
+    if (controller.selectedIndex == 0) {
       showDialog(
        barrierDismissible: false,
        context: context,
@@ -125,9 +127,8 @@ class _HomeScreenContainerScreenState extends State<HomeScreenContainerScreen> {
       controller.getIndex(0);
       // Get.back();
      }
-     return false;
-    },
-    child: Scaffold(
+   },
+   child: Scaffold(
         backgroundColor: appTheme.bgColor,
         body: SafeArea(child: screen[controller.selectedIndex]),
         bottomNavigationBar:

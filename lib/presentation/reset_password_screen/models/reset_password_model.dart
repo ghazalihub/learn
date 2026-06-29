@@ -1,3 +1,5 @@
-/// This class defines the variables used in the [reset_password_screen],
-/// and is typically used to hold data that is passed between different parts of the application.
-class ResetPasswordModel { }
+import 'package:get/get.dart';
+class ResetPasswordModel {
+  Rx<String> newPassword = "".obs;
+  Rx<String> confirmPassword = "".obs;
+}

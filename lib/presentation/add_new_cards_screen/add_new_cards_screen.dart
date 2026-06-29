@@ -156,7 +156,16 @@ class _AddNewCardsScreenState extends State<AddNewCardsScreen> {
   return CustomElevatedButton(
       text: "lbl_add_new_card".tr,
       onPressed: () {
-      Get.back();
+        if (_formKey.currentState!.validate()) {
+          // Save to local list for now, since no Stripe backend
+          final cardData = {
+            'number': controller.cardNumberEditTextController.text,
+            'expiry': controller.expiryDateEditTextController.text,
+            'cvv': controller.cvvEditTextController.text,
+          };
+          Get.snackbar("Success", "Card added successfully!");
+          Get.back(result: cardData);
+        }
       });
  }
 

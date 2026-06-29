@@ -2,6 +2,8 @@ import 'controller/videocall_details_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elearning_app/core/app_export.dart';
 import 'package:flutter_elearning_app/widgets/custom_icon_button.dart';
+import 'package:flutter_elearning_app/services/webrtc_service.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart';
 
 
 
@@ -14,11 +16,15 @@ class VideocallDetailsScreen extends StatefulWidget {
 
 class _VideocallDetailsScreenState extends State<VideocallDetailsScreen> {
   VideocallDetailsController controller = Get.put(VideocallDetailsController());
+  final WebRTCService _webrtc = Get.find<WebRTCService>();
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    _webrtc.initRenderers().then((_) {
+      _webrtc.makeCall();
+      setState(() {});
+    });
   }
 
   @override
@@ -44,24 +50,24 @@ backgroundColor: appTheme.bgColor,
               fit: BoxFit.fill,
             ),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
+          child: Stack(
             children: [
+              RTCVideoView(_webrtc.remoteRenderer),
               Padding(
-                padding:  EdgeInsets.symmetric(horizontal: 19.h),
-                child: CustomImageView(
-                  imagePath: ImageConstant.imgSmallImage,
-                  height: 169.v,
-                  width: 140.h,
-                  radius: BorderRadius.circular(
-                    12.h,
-                  ),
+                padding:  EdgeInsets.all(16.h),
+                child: Align(
                   alignment: Alignment.bottomRight,
-
+                  child: Container(
+                    height: 169.v,
+                    width: 140.h,
+                    child: RTCVideoView(_webrtc.localRenderer),
+                  ),
                 ),
               ),
-              SizedBox(height: 43.v),
-              _buildActions(),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: _buildActions(),
+              ),
             ],
           ),
         ),
@@ -82,6 +88,7 @@ backgroundColor: appTheme.bgColor,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CustomIconButton(
+            onTap: () => _webrtc.localRenderer.srcObject?.getAudioTracks().forEach((t) => t.enabled = !t.enabled),
             height: 58.adaptSize,
             width: 58.adaptSize,
             padding: EdgeInsets.all(16.h),
